@@ -9,7 +9,7 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#1F5D4C">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://littlemountainvoices.com/">
 <meta property="og:type" content="website">
@@ -19,27 +19,59 @@
 <meta property="og:url" content="https://littlemountainvoices.com/">
 <meta property="og:image" content="https://littlemountainvoices.com/assets/share.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" href="assets/fonts/Fredoka-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Fredoka.woff2" as="font" type="font/woff2" crossorigin>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"Little Mountain Voices","url":"https://littlemountainvoices.com/","logo":"https://littlemountainvoices.com/assets/icon-512.png","description":"Pediatric speech therapy for children 18 months to 10 years old, in the home or by teletherapy.","areaServed":["Spokane Valley, WA","Liberty Lake, WA","Post Falls, ID","Coeur d'Alene, ID"]}
+{"@context":"https://schema.org","@type":"Organization","name":"Little Mountain Voices","url":"https://littlemountainvoices.com/","logo":"https://littlemountainvoices.com/assets/icon-512.png","description":"Pediatric speech therapy for children 18 months to 10 years old, in the home or by teletherapy.","areaServed":["Spokane Valley, WA","Liberty Lake, WA","Post Falls, ID","Coeur d'Alene, ID","Hayden, ID","Rathdrum, ID"]}
 </script>
+<script src="assets/site.js" defer></script>
 <style>
-@font-face{font-family:'Fredoka';font-weight:500;font-display:swap;src:url('assets/fonts/Fredoka-500.woff2') format('woff2')}
-@font-face{font-family:'Fredoka';font-weight:600;font-display:swap;src:url('assets/fonts/Fredoka-600.woff2') format('woff2')}
-@font-face{font-family:'Nunito';font-weight:400;font-display:swap;src:url('assets/fonts/Nunito-400.woff2') format('woff2')}
-@font-face{font-family:'Nunito';font-weight:700;font-display:swap;src:url('assets/fonts/Nunito-700.woff2') format('woff2')}
+/* Both families are variable fonts: one file each covers every weight the page uses. */
+@font-face{font-family:'Fredoka';font-weight:300 700;font-display:swap;src:url('assets/fonts/Fredoka.woff2') format('woff2')}
+@font-face{font-family:'Nunito';font-weight:200 1000;font-display:swap;src:url('assets/fonts/Nunito.woff2') format('woff2')}
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
 body{background:#1F5D4C;color:#FFFFFF;font-family:'Nunito','Segoe UI',system-ui,sans-serif;font-size:18px;line-height:1.6;display:flex;flex-direction:column;min-height:100vh}
-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px;padding:56px max(24px,env(safe-area-inset-left)) 32px max(24px,env(safe-area-inset-right))}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px;padding:56px max(24px,env(safe-area-inset-right)) 32px max(24px,env(safe-area-inset-left))}
 .logo{width:min(320px,70vw);height:auto;display:block}
 h1{margin:0;font-family:'Fredoka','Trebuchet MS',sans-serif;font-weight:600;font-size:clamp(2.2rem,7vw,3.4rem);line-height:1.04}
 h1 span{color:#DCEEF5}
+h2{margin:0;font-family:'Fredoka','Trebuchet MS',sans-serif;font-weight:600;font-size:clamp(1.4rem,4vw,1.8rem);line-height:1.15}
 .slogan{margin:0;font-family:'Fredoka','Trebuchet MS',sans-serif;font-weight:500;font-size:clamp(1.2rem,3.6vw,1.5rem);color:#DCEEF5}
 .about{margin:0;max-width:34em;color:#DCEEF5}
-.open{display:inline-block;margin-top:6px;background:#FFFFFF;color:#1F5D4C;font-weight:700;padding:12px 28px;border-radius:999px}
+.open{display:inline-block;margin:6px 0 0;background:#FFFFFF;color:#1F5D4C;font-weight:700;padding:12px 28px;border-radius:999px}
+
+/* countdown: hidden until assets/site.js fills it in */
+.countdown{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:min(420px,100%)}
+.tile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 4px 10px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(220,238,245,.22)}
+.num{font-family:'Fredoka','Trebuchet MS',sans-serif;font-weight:600;font-size:clamp(1.7rem,6vw,2.4rem);line-height:1.1;font-variant-numeric:tabular-nums}
+.lbl{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#DCEEF5}
+.lbl .short{display:none}
+@media (max-width:420px){.map .town{padding:2px 6px}.lbl{letter-spacing:.04em}.lbl .long{display:none}.lbl .short{display:inline}}
+.until{margin:0;font-size:15px;color:#DCEEF5}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* service-area pin map */
+.area{display:flex;flex-direction:column;align-items:center;gap:14px;width:min(560px,100%);margin-top:20px}
+.map{position:relative;width:100%;aspect-ratio:16/9;background:#F7FAF8;border-radius:22px;overflow:hidden}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.road{fill:none;stroke:#74B28D;stroke-width:5;stroke-linecap:round;stroke-dasharray:2 12}
+.pin{transform-box:fill-box;transform-origin:50% 50%}
+.map .town,.map .st,.map .note{position:absolute;font-size:14px;line-height:1.2;white-space:nowrap}
+.map .town{font-weight:700;color:#16302B;background:rgba(255,255,255,.92);padding:2px 8px;border-radius:8px}
+.map .st{bottom:7%;font-weight:700;color:#35504A;letter-spacing:.08em}
+.map .note{left:12px;top:8px;color:#35504A}
+
 .ridge{display:block;width:100%;height:clamp(80px,12vw,150px)}
 footer{background:#174A3C;color:#DCEEF5;text-align:center;font-size:15px;padding:20px 24px 28px}
+
+@media (prefers-reduced-motion:no-preference){
+  .num.tick{animation:tick .45s cubic-bezier(.2,.8,.2,1)}
+  .map.armed .pin{transform:scale(0)}
+  .map.armed.play .pin{animation:pop .6s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i)*110ms)}
+}
+@keyframes tick{from{opacity:.3;transform:translateY(-30%)}}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
 </style>
 </head>
 <body>
@@ -73,6 +105,45 @@ footer{background:#174A3C;color:#DCEEF5;text-align:center;font-size:15px;padding
   <p class="slogan">Big progress starts with little words.</p>
   <p class="about">Speech therapy for children 18 months to 10 years old, in your home or by teletherapy, from Spokane Valley to Coeur d'Alene.</p>
   <p class="open">Opening August 2027</p>
+
+  <div class="countdown" id="countdown" hidden>
+    <div class="tiles" aria-hidden="true">
+      <div class="tile"><span class="num" data-unit="d">--</span><span class="lbl">Days</span></div>
+      <div class="tile"><span class="num" data-unit="h">--</span><span class="lbl"><span class="long">Hours</span><span class="short">Hrs</span></span></div>
+      <div class="tile"><span class="num" data-unit="m">--</span><span class="lbl"><span class="long">Minutes</span><span class="short">Min</span></span></div>
+      <div class="tile"><span class="num" data-unit="s">--</span><span class="lbl"><span class="long">Seconds</span><span class="short">Sec</span></span></div>
+    </div>
+    <p class="until">until we open<span class="sr" id="until-sr"></span></p>
+  </div>
+
+  <section class="area" aria-labelledby="area-title">
+    <h2 id="area-title">Where we'll visit</h2>
+    <p class="about">We come to your home, or meet your child where they are in the community, like a playground or the library.</p>
+    <div class="map" id="map" role="img" aria-label="Simple map of the service area: Spokane Valley and Liberty Lake in Washington; Post Falls, Coeur d'Alene, Hayden and Rathdrum in Idaho.">
+      <svg viewBox="0 0 640 360" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 300 Q120 270 240 296 T480 290 T640 300 V360 H0 Z" fill="#DCEEF5"/>
+        <path d="M500 300 Q560 268 600 300 Q590 345 540 352 Q500 340 500 300 Z" fill="#8FBAD6"/>
+        <path d="M40 60 l26 40 h-52 z M66 74 l20 32 h-40 z M600 40 l24 38 h-48 z M572 60 l18 30 h-36 z" fill="#8CC2A0" opacity=".55"/>
+        <line x1="282" y1="10" x2="282" y2="350" stroke="#BCDCEC" stroke-width="3" stroke-dasharray="10 8"/>
+        <path class="road" d="M51 209 L192 202 L358 216 L538 259"/>
+        <path class="road" d="M538 259 L499 108 L346 86 L358 216"/>
+        <g class="pin" style="--i:0"><circle cx="51" cy="209" r="11" fill="#1F5D4C"/><circle cx="51" cy="209" r="4" fill="#FFFFFF"/></g>
+        <g class="pin" style="--i:1"><circle cx="192" cy="202" r="11" fill="#1F5D4C"/><circle cx="192" cy="202" r="4" fill="#FFFFFF"/></g>
+        <g class="pin" style="--i:2"><circle cx="358" cy="216" r="11" fill="#1F5D4C"/><circle cx="358" cy="216" r="4" fill="#FFFFFF"/></g>
+        <g class="pin" style="--i:3"><circle cx="538" cy="259" r="11" fill="#1F5D4C"/><circle cx="538" cy="259" r="4" fill="#FFFFFF"/></g>
+        <g class="pin" style="--i:4"><circle cx="499" cy="108" r="11" fill="#1F5D4C"/><circle cx="499" cy="108" r="4" fill="#FFFFFF"/></g>
+        <g class="pin" style="--i:5"><circle cx="346" cy="86" r="11" fill="#1F5D4C"/><circle cx="346" cy="86" r="4" fill="#FFFFFF"/></g>
+      </svg>
+      <span class="st" style="left:calc(44% - 48px)" aria-hidden="true">WA</span><span class="st" style="left:calc(44% + 14px)" aria-hidden="true">ID</span>
+      <span class="town" style="left:2%;top:63%" aria-hidden="true">Spokane Valley</span>
+      <span class="town" style="left:30%;top:56%;transform:translate(-50%,-100%) translateY(-14px)" aria-hidden="true">Liberty Lake</span>
+      <span class="town" style="left:calc(56% - 14px);top:64%" aria-hidden="true">Post Falls</span>
+      <span class="town" style="right:4%;top:77%" aria-hidden="true">Coeur d'Alene</span>
+      <span class="town" style="left:78%;top:30%;transform:translate(-50%,-100%) translateY(-12px)" aria-hidden="true">Hayden</span>
+      <span class="town" style="left:54%;top:24%;transform:translate(-50%,-100%) translateY(-12px)" aria-hidden="true">Rathdrum</span>
+      <span class="note" aria-hidden="true">Not to scale</span>
+    </div>
+  </section>
 </main>
 <svg class="ridge" aria-hidden="true" viewBox="0 0 1440 150" preserveAspectRatio="none"><path d="M0 90 L150 40 L280 84 L450 18 L600 86 L780 32 L940 88 L1110 24 L1270 82 L1440 44 V150 H0 Z" fill="#2A7A62"/><path d="M0 120 L200 66 L360 112 L560 54 L760 118 L960 68 L1140 114 L1300 76 L1440 104 V150 H0 Z" fill="#174A3C"/></svg>
 <footer>Our full website is on its way.</footer>
