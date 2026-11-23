@@ -7,6 +7,7 @@ Public website for Little Mountain Voices, a pediatric speech therapy practice (
 - Never put "PLLC" on the site. It belongs on legal paperwork only.
 - Do not describe Kodee as licensed in Washington or Idaho until each license is issued.
 - No prices on the site. Prices are shared by phone or email.
+- Insurance wording, used everywhere (site, flyers, social, catalog): "We do not currently take insurance. We can give you an itemized receipt (called a superbill) to send to your insurance yourself. We're also looking into accepting HSA/FSA funds." Update the HSA/FSA part once approval is settled.
 - No photos, names or stories of client children without written parent permission.
 - No ad trackers or analytics that collect personal information.
 - Clinical content (the parent guide) must be reviewed by Kodee before it is published.
