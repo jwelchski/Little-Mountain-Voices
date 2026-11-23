@@ -14,8 +14,9 @@ Public website for Little Mountain Voices, a pediatric speech therapy practice (
 
 ## How the site is built
 - `index.html` holds all seven pages (home, what to look for, services, how it works, meet Kodee, questions, interest list). The address after `#` picks which one shows, for example `littlemountainvoices.com/#services`.
-- `assets/site.js` runs the page switching, the age trail, the service-area map, the opening countdown chip and the form checks.
-- The opening countdown counts to 1 August 2027. Change `new Date(2027,7,1)` in `assets/site.js` if the date moves (months count from 0, so 7 is August).
+- `assets/app.js` runs the page switching, the age trail, the service-area map, the opening countdown chip and the form checks.
+- The opening countdown counts to 1 August 2027. Change `new Date(2027,7,1)` in `assets/app.js` if the date moves (months count from 0, so 7 is August).
 - The interest list form is switched off (`inert` and `is-soon` on the form in `index.html`) until it is connected to Google Workspace. To turn it on, remove both, remove the "Online sign-up opens soon" note, and send the answers somewhere real.
 - Fredoka and Nunito are variable fonts served from `assets/fonts/`, one file each. Don't link Google Fonts: visitors' browsers shouldn't contact Google.
+- Whenever `assets/app.js` changes, raise the number in `app.js?v=1` in `index.html` (v=2, v=3…). Browsers keep old copies for a few minutes, and a stale script with a fresh page breaks every link.
 - The Content-Security-Policy in `index.html` only allows scripts from this site. Don't add inline scripts or outside script hosts.
