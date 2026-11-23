@@ -12,8 +12,10 @@ Public website for Little Mountain Voices, a pediatric speech therapy practice (
 - No ad trackers or analytics that collect personal information.
 - Clinical content (the parent guide) must be reviewed by Kodee before it is published.
 
-## How the page is built
-- `index.html` is the whole page. `assets/site.js` adds the opening countdown and the map pin animation; the page still reads fine without it.
-- The countdown counts to 1 August 2027, midnight Pacific. Change `OPENING` in `assets/site.js` if the date moves.
-- Fredoka and Nunito are variable fonts: one file each in `assets/fonts/` covers every weight.
+## How the site is built
+- `index.html` holds all seven pages (home, what to look for, services, how it works, meet Kodee, questions, interest list). The address after `#` picks which one shows, for example `littlemountainvoices.com/#services`.
+- `assets/site.js` runs the page switching, the age trail, the service-area map, the opening countdown chip and the form checks.
+- The opening countdown counts to 1 August 2027. Change `new Date(2027,7,1)` in `assets/site.js` if the date moves (months count from 0, so 7 is August).
+- The interest list form is switched off (`inert` and `is-soon` on the form in `index.html`) until it is connected to Google Workspace. To turn it on, remove both, remove the "Online sign-up opens soon" note, and send the answers somewhere real.
+- Fredoka and Nunito are variable fonts served from `assets/fonts/`, one file each. Don't link Google Fonts: visitors' browsers shouldn't contact Google.
 - The Content-Security-Policy in `index.html` only allows scripts from this site. Don't add inline scripts or outside script hosts.

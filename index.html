@@ -21,131 +21,939 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/Fredoka.woff2" as="font" type="font/woff2" crossorigin>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"Little Mountain Voices","url":"https://littlemountainvoices.com/","logo":"https://littlemountainvoices.com/assets/icon-512.png","description":"Pediatric speech therapy for children 18 months to 10 years old, in the home, in the community, or by teletherapy.","areaServed":["Spokane Valley, WA","Liberty Lake, WA","Post Falls, ID","Coeur d'Alene, ID","Hayden, ID","Rathdrum, ID"]}
+{"@context":"https://schema.org","@type":"Organization","name":"Little Mountain Voices","url":"https://littlemountainvoices.com/","logo":"https://littlemountainvoices.com/assets/icon-512.png","description":"Pediatric speech therapy for children 18 months to 10 years old, in the home, in the community, or by teletherapy.","email":"hello@littlemountainvoices.com","telephone":"+1-406-209-9826","areaServed":["Spokane Valley, WA","Liberty Lake, WA","Post Falls, ID","Coeur d'Alene, ID","Hayden, ID","Rathdrum, ID"]}
 </script>
 <script src="assets/site.js" defer></script>
 <style>
-/* Both families are variable fonts: one file each covers every weight the page uses. */
+/* Fonts are served from this site so visitors' browsers never contact Google. Both are variable fonts: one file each. */
 @font-face{font-family:'Fredoka';font-weight:300 700;font-display:swap;src:url('assets/fonts/Fredoka.woff2') format('woff2')}
 @font-face{font-family:'Nunito';font-weight:200 1000;font-display:swap;src:url('assets/fonts/Nunito.woff2') format('woff2')}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%}
-body{background:#1F5D4C;color:#FFFFFF;font-family:'Nunito','Segoe UI',system-ui,sans-serif;font-size:18px;line-height:1.6;display:flex;flex-direction:column;min-height:100vh}
-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px;padding:56px max(24px,env(safe-area-inset-right)) 32px max(24px,env(safe-area-inset-left))}
-.logo{width:min(320px,70vw);height:auto;display:block}
-h1{margin:0;font-family:'Fredoka','Trebuchet MS',sans-serif;font-weight:600;font-size:clamp(2.2rem,7vw,3.4rem);line-height:1.04}
-h1 span{color:#DCEEF5}
-h2{margin:0;font-family:'Fredoka','Trebuchet MS',sans-serif;font-weight:600;font-size:clamp(1.4rem,4vw,1.8rem);line-height:1.15}
-.slogan{margin:0;font-family:'Fredoka','Trebuchet MS',sans-serif;font-weight:500;font-size:clamp(1.2rem,3.6vw,1.5rem);color:#DCEEF5}
-.about{margin:0;max-width:34em;color:#DCEEF5}
-.open{display:inline-block;margin:6px 0 0;background:#FFFFFF;color:#1F5D4C;font-weight:700;padding:12px 28px;border-radius:999px}
 
-/* countdown: hidden until assets/site.js fills it in */
-.countdown{display:flex;flex-direction:column;align-items:center;gap:10px;margin:0}
-.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:min(420px,100%)}
-.tile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 4px 10px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(220,238,245,.22)}
-.num{font-family:'Fredoka','Trebuchet MS',sans-serif;font-weight:600;font-size:clamp(1.7rem,6vw,2.4rem);line-height:1.1;font-variant-numeric:tabular-nums}
-.lbl{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#DCEEF5}
-.lbl .short{display:none}
-@media (max-width:420px){.map .town{padding:2px 6px}.lbl{letter-spacing:.04em}.lbl .long{display:none}.lbl .short{display:inline}}
-.until{margin:0;font-size:15px;color:#DCEEF5}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-
-/* service-area pin map */
-.area{display:flex;flex-direction:column;align-items:center;gap:14px;width:min(560px,100%);margin-top:20px}
-.map{position:relative;width:100%;aspect-ratio:16/9;background:#F7FAF8;border-radius:22px;overflow:hidden}
-.map svg{position:absolute;inset:0;width:100%;height:100%}
-.road{fill:none;stroke:#74B28D;stroke-width:5;stroke-linecap:round;stroke-dasharray:2 12}
-.pin{transform-box:fill-box;transform-origin:50% 50%}
-.map .town,.map .st,.map .note{position:absolute;font-size:14px;line-height:1.2;white-space:nowrap}
-.map .town{font-weight:700;color:#16302B;background:rgba(255,255,255,.92);padding:2px 8px;border-radius:8px}
-.map .st{bottom:7%;font-weight:700;color:#35504A;letter-spacing:.08em}
-.map .note{left:12px;top:8px;color:#35504A}
-
-.ridge{display:block;width:100%;height:clamp(80px,12vw,150px)}
-footer{background:#174A3C;color:#DCEEF5;text-align:center;font-size:15px;padding:20px 24px 28px}
-
-@media (prefers-reduced-motion:no-preference){
-  .num.tick{animation:tick .45s cubic-bezier(.2,.8,.2,1)}
-  .map.armed .pin{transform:scale(0)}
-  .map.armed.play .pin{animation:pop .6s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i)*110ms)}
+/* Layout: seven hash pages. Pine header stays pinned; each page slides in through a view transition; mountain ridges move in parallax. Motion lives in the scenery (clouds, word bubbles, trail hiker, map pins), never in the logo itself (brand catalog v4). Single light brand look by choice. */
+:root{
+  --pine:#1F5D4C; --pine-deep:#174A3C; --pine-mid:#2A7A62; --lake:#2E6F9E; --lake-deep:#235A82; --meadow:#8CC2A0; --meadow-deep:#74B28D;
+  --sky:#DCEEF5; --sky-soft:#EDF6FA; --sky-mid:#BCDCEC; --snow:#F7FAF8; --white:#FFFFFF; --ink:#16302B; --ink-soft:#35504A; --line:#C9D6D1;
+  --on-pine:#FFFFFF; --on-pine-soft:#DCEEF5; --note:#FFF4D6; --note-ink:#4A3A0A; --error:#A3322A;
+  --display:'Fredoka','Trebuchet MS','Segoe UI',sans-serif; --body:'Nunito',Arial,'Segoe UI',system-ui,sans-serif;
+  --ease-out:cubic-bezier(.2,.8,.2,1); --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --gutter-l:max(24px,env(safe-area-inset-left,0px)); --gutter-r:max(24px,env(safe-area-inset-right,0px));
 }
-@keyframes tick{from{opacity:.3;transform:translateY(-30%)}}
-@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+*{box-sizing:border-box}
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:auto}
+body{background:var(--white);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--pine)}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.12;margin:0;text-wrap:balance}
+h1{font-size:clamp(2.2rem,5.4vw,3.6rem)} h2{font-size:clamp(1.7rem,3.6vw,2.4rem);color:var(--pine)} h3{font-size:1.45rem;color:var(--pine)}
+p{margin:0} a{color:var(--lake)} ul{margin:0;padding-left:22px} li{margin-bottom:8px} li:last-child{margin-bottom:0}
+:focus-visible{outline:3px solid var(--lake);outline-offset:3px;border-radius:6px}
+.pine :focus-visible{outline-color:var(--white)}
+h1:focus{outline:none}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--white);color:var(--pine);font-weight:700;padding:10px 18px;border-radius:999px;text-decoration:none}
+.skip:focus{top:calc(12px + env(safe-area-inset-top,0px))}
+.wrap{max-width:1080px;margin-inline:auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+.narrow{max-width:800px}
+.sec{padding-block:64px}
+.stack{display:flex;flex-direction:column;gap:20px}
+.stack-lg{display:flex;flex-direction:column;gap:44px}
+.center{align-items:center;text-align:center}
+.lede{font-size:1.2rem;max-width:60ch}
+.text{max-width:62ch}
+.eyebrow{font-weight:700;font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--lake)}
+.skyband .eyebrow{color:var(--lake-deep)}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 30px;border-radius:999px;border:0;font-family:var(--body);font-weight:700;font-size:1.05rem;text-decoration:none;cursor:pointer;transition:transform .35s var(--ease-spring),box-shadow .35s var(--ease-out),background-color .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 24px -10px rgba(22,48,43,.55)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn .arrow{transition:transform .35s var(--ease-spring)}
+.btn:hover .arrow{transform:translateX(4px)}
+.btn-light{background:var(--white);color:var(--pine)} .btn-pine{background:var(--pine);color:var(--on-pine)}
+.btn-pine:hover{background:var(--pine-deep)}
+.more{font-weight:700;text-decoration:none;background:linear-gradient(currentColor,currentColor) 0 100%/0 2px no-repeat;transition:background-size .35s var(--ease-out);padding-bottom:2px}
+.more:hover{background-size:100% 2px}
+.ridge{display:block;width:100%;height:clamp(90px,12vw,170px)}
+.defs{position:absolute;width:0;height:0}
+.draft{background:var(--note);color:var(--note-ink);font-size:.9rem}
+.draft .wrap{padding-block:10px}
+.pine{background:var(--pine);color:var(--on-pine)}
+.pine h1,.pine h2,.pine h3{color:var(--on-pine)}
+.pine .lede,.pine p{color:var(--on-pine-soft)}
+
+/* progress bar */
+.progress{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);height:4px;z-index:70;pointer-events:none}
+.progress i{display:block;height:100%;background:var(--meadow);transform-origin:0 50%;transform:scaleX(var(--p,0));border-radius:0 4px 4px 0}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--pine);transition:box-shadow .3s}
+header.top.scrolled{box-shadow:0 10px 30px -18px rgba(10,30,25,.8)}
+header.top .bar{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:18px;transition:padding .3s var(--ease-out)}
+header.top.scrolled .bar{padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--on-pine);text-decoration:none;line-height:1.05;flex:none}
+.brand>span>span{color:var(--on-pine-soft)}
+.brand svg{transition:width .3s var(--ease-out),height .3s var(--ease-out)}
+header.top.scrolled .brand svg{width:44px;height:44px}
+.navarea{display:flex;align-items:center;gap:22px}
+nav.main{display:flex;align-items:center;gap:4px 22px}
+nav.main a{position:relative;color:var(--on-pine);font-weight:700;font-size:.98rem;text-decoration:none;padding:10px 0}
+nav.main a::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:3px;border-radius:3px;background:var(--on-pine-soft);transform:scaleX(0);transform-origin:50% 50%;transition:transform .35s var(--ease-out)}
+nav.main a:hover::after{transform:scaleX(1)}
+nav.main a[aria-current=page]::after{transform:scaleX(1);background:var(--meadow)}
+.pill{background:var(--white);color:var(--pine);font-weight:700;font-size:.98rem;padding:10px 22px;border-radius:999px;text-decoration:none;white-space:nowrap;transition:transform .35s var(--ease-spring),background-color .2s}
+.pill:hover{transform:translateY(-2px);background:var(--sky)}
+.pill[aria-current=page]{background:var(--meadow);color:var(--ink)}
+.menu-btn{display:none;align-items:center;gap:10px;min-height:44px;padding:0 16px;border-radius:999px;border:2px solid rgba(255,255,255,.5);background:transparent;color:var(--on-pine);font-family:var(--body);font-weight:700;font-size:.98rem;cursor:pointer}
+.menu-btn .bars{position:relative;width:18px;height:12px}
+.menu-btn .bars i{position:absolute;left:0;right:0;height:2.5px;border-radius:2px;background:currentColor;transition:transform .35s var(--ease-out),opacity .2s}
+.menu-btn .bars i:nth-child(1){top:0}.menu-btn .bars i:nth-child(2){top:5px}.menu-btn .bars i:nth-child(3){top:10px}
+.menu-btn[aria-expanded=true] .bars i:nth-child(1){transform:translateY(5px) rotate(45deg)}
+.menu-btn[aria-expanded=true] .bars i:nth-child(2){opacity:0}
+.menu-btn[aria-expanded=true] .bars i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+@media (max-width:920px){
+  .menu-btn{display:inline-flex}
+  .navarea{gap:10px}
+  nav.main{position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--pine-deep);padding:8px var(--gutter-r) 20px var(--gutter-l);box-shadow:0 24px 30px -20px rgba(10,30,25,.7);visibility:hidden;opacity:0;transform:translateY(-10px);transition:opacity .25s,transform .35s var(--ease-out),visibility 0s .35s}
+  nav.main.open{visibility:visible;opacity:1;transform:none;transition:opacity .25s,transform .35s var(--ease-out),visibility 0s}
+  nav.main a{padding:14px 4px;font-size:1.1rem;border-bottom:1px solid rgba(255,255,255,.12)}
+  nav.main a::after{left:4px;right:auto;width:28px;bottom:8px;transform-origin:0 50%}
+  nav.main.open a{animation:menuIn .45s var(--ease-out) both;animation-delay:calc(var(--i,0)*45ms)}
+}
+nav.main a.navcta{display:none}
+@media (max-width:440px){.pill{display:none}nav.main a.navcta{display:block;color:var(--meadow)}.brand{font-size:1.2rem}}
+@media (max-width:370px){.menu-btn .lbl{display:none}.menu-btn{padding:0 12px}.brand{font-size:1.1rem}.brand svg{width:42px;height:42px}}
+@keyframes menuIn{from{opacity:0;transform:translateX(-12px)}}
+
+/* hero */
+.hero{position:relative;overflow:hidden}
+.hero .wrap{position:relative;z-index:1;display:flex;align-items:center;gap:40px;flex-wrap:wrap;padding-block:48px 8px}
+.hero .copy{flex:1 1 420px;min-width:0;align-items:flex-start}
+.hero h1 .w{display:inline-block}
+.hero h1 .hl{position:relative;display:inline-block;color:var(--on-pine-soft)}
+.hero h1 .hl svg{position:absolute;left:-2%;right:-2%;bottom:-.18em;width:104%;height:.32em;overflow:visible}
+.hero h1 .hl path{fill:none;stroke:var(--meadow);stroke-width:5;stroke-linecap:round}
+.opening{display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:700;color:var(--on-pine)}
+.opening .dot{position:relative;width:12px;height:12px;border-radius:50%;background:var(--meadow);flex:none}
+.opening .dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--meadow)}
+.opening .soon{font-weight:600;color:var(--on-pine-soft);background:rgba(255,255,255,.1);padding:2px 12px;border-radius:999px}
+.hero .art{position:relative;flex:0 1 480px;min-width:260px;margin-inline:auto;padding-block:76px}
+.hero .art .logo{position:relative;z-index:1;width:68%;height:auto;display:block;margin-inline:auto}
+.glow{position:absolute;inset:6%;border-radius:50%;background:radial-gradient(closest-side,rgba(188,220,236,.22),rgba(188,220,236,0));z-index:0}
+.bubble{position:absolute;z-index:2;font-family:var(--display);font-weight:500;font-size:1rem;color:var(--ink);background:var(--white);padding:6px 14px;border-radius:18px;white-space:nowrap;box-shadow:0 8px 18px -10px rgba(10,30,25,.6);translate:calc(var(--mx,0)*var(--d,10px)) calc(var(--my,0)*var(--d,10px));transition:translate .6s var(--ease-out)}
+.bubble::after{content:"";position:absolute;bottom:-7px;width:14px;height:12px;background:inherit;clip-path:polygon(0 0,100% 0,20% 100%)}
+.bubble.l::after{left:18px}.bubble.r::after{right:18px;clip-path:polygon(0 0,100% 0,80% 100%)}
+.bubble small{display:block;font-family:var(--body);font-weight:700;font-size:.875rem;color:var(--lake-deep);letter-spacing:.02em;line-height:1.2}
+.b1{left:0;top:4px;--d:14px}.b2{right:0;top:0;--d:-10px}.b3{right:0;bottom:8px;--d:18px}.b4{left:0;bottom:0;--d:-16px}
+@media (max-width:560px){.hero .art{padding-block:64px;width:100%}.hero .art .logo{width:62%}.b4{display:none}.bubble{font-size:.95rem;padding:5px 12px}}
+.clouds{position:absolute;inset:0;pointer-events:none;z-index:0}
+.clouds span{position:absolute;height:26px;border-radius:999px;background:rgba(220,238,245,.08)}
+.clouds span::before{content:"";position:absolute;left:22%;top:-14px;width:44%;height:30px;border-radius:999px;background:inherit}
+.clouds .c1{width:180px;left:-8%;top:16%}.clouds .c2{width:120px;left:38%;top:7%}.clouds .c3{width:150px;left:70%;top:62%}
+.hero-ridge{position:relative;display:block;width:100%;height:clamp(110px,14vw,200px);margin-top:-10px}
+.hero-ridge g{will-change:transform}
+
+/* page headers */
+.head .wrap{padding-block:40px 24px}
+.head h1{font-size:clamp(2.1rem,4.8vw,3rem)}
+.skyband{background:var(--sky)}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:26px;width:100%;text-align:left}
+.card{position:relative;overflow:hidden;background:var(--snow);border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;transition:transform .45s var(--ease-spring),box-shadow .45s var(--ease-out)}
+.card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(260px circle at var(--x,50%) var(--y,50%),rgba(140,194,160,.28),transparent 70%)}
+.card:hover{transform:translateY(-6px);box-shadow:0 22px 40px -26px rgba(22,48,43,.55)}
+.card:hover::before{opacity:1}
+.card>*{position:relative}
+.skyband .card{background:var(--white)}
+.card small,.tag{font-weight:700;color:var(--lake);font-size:.95rem}
+.card .ico{width:56px;height:56px;border-radius:18px;background:var(--sky);display:grid;place-items:center;transition:transform .5s var(--ease-spring)}
+.skyband .card .ico{background:var(--sky-soft)}
+.card:hover .ico{transform:rotate(-8deg) scale(1.08)}
+.card .ico svg{width:34px;height:34px}
+
+/* trail */
+.trail{display:flex;gap:28px 44px;flex-wrap:wrap;align-items:center}
+.scene{position:relative;flex:1 1 320px;max-width:470px;min-width:0;margin-inline:auto;aspect-ratio:480/580;width:100%}
+.scene>svg{display:block;width:100%;height:100%}
+.stop{position:absolute;transform:translate(-50%,-50%);min-height:44px;padding:0 14px;border-radius:999px;border:3px solid var(--white);background:var(--white);color:var(--pine);font-family:var(--body);font-weight:700;font-size:.95rem;white-space:nowrap;cursor:pointer;box-shadow:0 3px 0 rgba(22,48,43,.28);z-index:2;transition:background-color .2s,color .2s,transform .35s var(--ease-spring),box-shadow .2s}
+.stop:hover{background:var(--sky);transform:translate(-50%,-50%) scale(1.06)}
+.stop[aria-selected=true]{background:var(--lake);color:var(--white);transform:translate(-50%,-50%) scale(1.06);box-shadow:0 4px 0 var(--lake-deep)}
+.stop.passed:not([aria-selected=true]){border-color:var(--meadow)}
+.stop:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.hiker{position:absolute;width:11%;left:23.96%;top:83.62%;transform:translate(-50%,-100%) scale(var(--grow,.7));transform-origin:50% 100%;pointer-events:none;z-index:1}
+.hiker svg{display:block;width:100%;height:auto;overflow:visible;transform-origin:50% 100%}
+.hiker .eye{transform-box:fill-box;transform-origin:50% 50%}
+.flag{transform-box:fill-box;transform-origin:0 50%}
+.burst{position:absolute;left:52%;top:6%;width:0;height:0;z-index:3;pointer-events:none}
+.burst i{position:absolute;width:10px;height:10px;border-radius:50%;opacity:0}
+.agecard{flex:1 1 360px;min-width:0;background:var(--snow);border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:22px;touch-action:pan-y}
+.agemeter{display:flex;gap:6px}
+.agemeter i{flex:1;height:6px;border-radius:6px;background:var(--line);transition:background-color .4s}
+.agemeter i.on{background:var(--meadow-deep)}
+.agepanel{display:flex;flex-direction:column;gap:18px}
+.agepanel+.agepanel{margin-top:28px;padding-top:28px;border-top:2px dashed var(--meadow)}
+.agepanel h3{font-size:1.7rem}
+.age-body{display:flex;flex-direction:column;gap:16px}
+.agenav{display:none;justify-content:space-between;align-items:center;gap:12px}
+.agenav button{min-height:44px;padding:0 20px;border-radius:999px;border:2px solid var(--pine);background:transparent;color:var(--pine);font-family:var(--body);font-weight:700;font-size:.95rem;cursor:pointer;transition:background-color .2s,color .2s,transform .3s var(--ease-spring)}
+.agenav button:hover:not(:disabled){background:var(--pine);color:var(--white)}
+.agenav button:active:not(:disabled){transform:scale(.95)}
+.agenav button:disabled{opacity:.35;cursor:default}
+.agenav .hint{font-size:.9rem;color:var(--ink-soft);text-align:center}
+.trail.js .agepanels{display:grid}
+.trail.js .agepanel{grid-area:1/1;margin:0;padding:0;border:0}
+.trail.js .agepanel.off{visibility:hidden}
+.trail.js .agenav{display:flex}
+.trail:not(.js) .stops,.trail:not(.js) .hiker,.trail:not(.js) .agemeter{display:none}
+@media (max-width:560px){.agecard{padding:24px}.stop{font-size:.88rem;padding:0 11px}.agenav .hint{display:none}}
+.mile{display:flex;flex-direction:column;gap:2px}
+.mile b{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--lake-deep)}
+.mile p{font-size:1rem}
+
+/* panels, services */
+.panel{background:var(--sky);border-radius:28px;padding:36px 40px;display:flex;gap:20px 48px;flex-wrap:wrap;align-items:flex-start}
+.panel h3{flex:0 1 260px}
+.panel .body{flex:1 1 420px;min-width:0}
+.checks{list-style:none;padding:0}
+.checks li{position:relative;padding-left:34px}
+.checks li::before{content:"";position:absolute;left:0;top:.3em;width:20px;height:20px;border-radius:50%;background:var(--pine) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
+.service{display:flex;gap:16px 48px;flex-wrap:wrap;padding-block:40px;border-top:2px dashed var(--meadow)}
+.service:first-child{border-top:0;padding-top:0}
+.service .name{flex:0 0 250px;display:flex;flex-direction:column;gap:6px}
+.service .body{flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:14px}
+
+/* area map */
+.map{position:relative;width:100%;aspect-ratio:16/9;max-width:100%;background:var(--snow);border-radius:22px;overflow:hidden;margin-top:6px}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.map .road{fill:none;stroke:var(--meadow-deep);stroke-width:5;stroke-linecap:round;stroke-dasharray:2 12}
+.map .pin{transform-box:fill-box;transform-origin:50% 100%;transition:transform .35s var(--ease-spring)}
+.map .pin circle{transition:fill .2s}
+.map .pin.hot{transform:scale(1.25)}
+.map .pin.hot circle.core{fill:var(--lake)}
+.map.armed .pin{transform:scale(0)}
+.map.armed.play .pin{animation:pinPop .6s var(--ease-spring) both;animation-delay:calc(var(--i)*110ms)}
+@keyframes pinPop{from{transform:scale(0)}to{transform:scale(1)}}
+.map .lbl{position:absolute;font-weight:700;font-size:.875rem;line-height:1.2;color:var(--ink);background:rgba(255,255,255,.9);padding:2px 8px;border-radius:8px;white-space:nowrap;transition:background-color .2s,color .2s}
+.map .lbl.hot{background:var(--lake);color:var(--white)}
+.map .st{position:absolute;top:6%;font-weight:700;font-size:.875rem;color:var(--ink-soft);letter-spacing:.08em}
+.map .note{position:absolute;left:12px;bottom:6px;font-size:.875rem;color:var(--ink-soft)}
+.towns{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.towns li{margin:0}
+.towns button{font-family:var(--body);background:var(--white);color:var(--ink);border:2px solid transparent;border-radius:999px;padding:4px 13px;font-weight:600;font-size:.9rem;cursor:default;transition:border-color .2s,transform .3s var(--ease-spring)}
+.towns button.hot,.towns button:hover{border-color:var(--lake);transform:translateY(-2px)}
+
+/* steps */
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;position:relative;margin:0;padding:0 0 44px 96px;min-height:68px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;font-family:var(--display);font-weight:600;font-size:1.7rem;width:68px;height:68px;border-radius:50%;background:var(--pine);color:var(--on-pine);display:grid;place-items:center;z-index:1;box-shadow:0 0 0 6px var(--white)}
+.steps li::after{content:"";position:absolute;left:32px;top:68px;bottom:0;border-left:4px dotted var(--meadow)}
+.steps li:last-child{padding-bottom:0} .steps li:last-child::after{display:none}
+.steps h3{padding-top:6px;margin-bottom:6px}
+.points{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:36px 44px;list-style:none;margin:0;padding:0;text-align:left}
+.points li{position:relative;display:flex;flex-direction:column;gap:8px;padding-top:20px;margin:0}
+.points li::before{content:"";position:absolute;left:0;top:0;height:3px;width:100%;background:var(--meadow);border-radius:3px;transform-origin:0 50%}
+
+/* speech vs language */
+.swap{display:inline-grid;vertical-align:bottom;font-family:var(--display);font-weight:600;color:var(--pine)}
+.swap span{grid-area:1/1;transition:opacity .4s,transform .5s var(--ease-spring)}
+.swap span+span{opacity:0;transform:translateY(60%)}
+.swap.flip span:first-child{opacity:0;transform:translateY(-60%)}
+.swap.flip span+span{opacity:1;transform:none}
+.demo{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--white);border-radius:16px;padding:10px 16px;font-size:1.25rem}
+.demo .say{font-size:.875rem;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+
+/* about */
+.about{display:flex;gap:64px;flex-wrap:wrap;align-items:center}
+.blob{flex:0 1 360px;min-width:220px;position:relative;margin-inline:auto}
+.blob::before{content:"";position:absolute;left:-22px;top:26px;right:22px;bottom:-22px;background:var(--meadow);border-radius:58% 42% 55% 45% / 48% 56% 44% 52%}
+.blob img{position:relative;display:block;width:100%;max-width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 0;border-radius:52% 48% 46% 54% / 44% 50% 50% 56%;background:var(--sky)}
+.about .text{flex:1 1 400px;min-width:0;align-items:flex-start}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:26px;margin:0}
+.facts div{background:var(--snow);border-radius:28px;padding:32px}
+.facts dt{font-weight:700;font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--lake);margin-bottom:12px}
+.facts dd{margin:0}
+.fine{font-size:.88rem;color:var(--ink-soft)}
+.kq{margin:0;padding:20px 24px;background:var(--sky-soft);border-left:5px solid var(--meadow);border-radius:0 20px 20px 0;display:flex;flex-direction:column;gap:8px}
+.kq p{font-style:italic}
+.kq footer{background:none;font-size:.95rem;font-weight:700;color:var(--pine)}
+
+/* faq */
+.qa{display:flex;flex-direction:column;gap:16px}
+.qa details{background:var(--snow);border-radius:24px;transition:background-color .25s,box-shadow .3s}
+.qa details[open]{background:var(--sky-soft);box-shadow:inset 0 0 0 2px var(--sky-mid)}
+.qa summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 30px;border-radius:24px}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary h2{font-size:1.35rem}
+.qa summary .pm{flex:none;width:36px;height:36px;border-radius:50%;background:var(--pine);position:relative;transition:transform .4s var(--ease-spring),background-color .2s}
+.qa summary .pm::before,.qa summary .pm::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2.5px;margin:-1.25px 0 0 -7px;background:var(--white);border-radius:2px}
+.qa summary .pm::after{transform:rotate(90deg);transition:transform .3s var(--ease-out)}
+.qa details[open] .pm{transform:rotate(180deg);background:var(--lake)}
+.qa details[open] .pm::after{transform:rotate(0)}
+.qa summary:hover .pm{transform:scale(1.1)}
+.qa details[open] summary:hover .pm{transform:rotate(180deg) scale(1.1)}
+.qa .ans{padding:0 30px 26px}
+.qa details[open] .ans{animation:ansIn .45s var(--ease-out)}
+@keyframes ansIn{from{opacity:0;transform:translateY(-8px)}}
+
+/* cta */
+.cta .wrap{padding-block:28px 88px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+.cta h2{font-size:clamp(1.9rem,4vw,2.6rem)}
+.cta.bare .wrap{display:none}
+
+/* form */
+form{background:var(--snow);color:var(--ink);border-radius:28px;padding:38px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.formhead{grid-column:1/-1;display:flex;flex-direction:column;gap:8px}
+.meter{height:10px;border-radius:10px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--meadow),var(--meadow-deep));transform-origin:0 50%;transform:scaleX(var(--f,0));transition:transform .5s var(--ease-out);border-radius:10px}
+.meterlbl{font-size:.9rem;font-weight:700;color:var(--ink-soft)}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field.full{grid-column:1/-1}
+label,legend{font-weight:700;font-size:.95rem}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0;margin-bottom:8px}
+input[type=text],input[type=email],input[type=tel],textarea{font:inherit;color:var(--ink);background:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;min-height:50px;width:100%;transition:border-color .2s,box-shadow .2s}
+input:focus,textarea:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 4px rgba(46,111,158,.18)}
+textarea{min-height:110px;resize:vertical}
+[aria-invalid=true]{border-color:var(--error)!important}
+.err{font-size:.9rem;font-weight:700;color:var(--error)}
+.err:empty{display:none}
+.ok-tick{color:var(--pine-mid);font-weight:700;font-size:.9rem;opacity:0;transition:opacity .2s}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{position:relative;font-weight:600;font-size:.95rem;cursor:pointer}
+.chips input{position:absolute;opacity:0;width:1px;height:1px}
+.chips span{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;background:var(--white);border:1.5px solid var(--line);transition:background-color .2s,color .2s,border-color .2s,transform .3s var(--ease-spring)}
+.chips label:hover span{border-color:var(--pine)}
+.chips input:checked+span{background:var(--pine);color:var(--white);border-color:var(--pine);transform:scale(1.04)}
+.chips input:focus-visible+span{outline:3px solid var(--lake);outline-offset:2px}
+.chips.bad span{border-color:var(--error)}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:600}
+.check input{width:22px;height:22px;margin-top:3px;flex:none;accent-color:var(--pine)}
+.formnote{grid-column:1/-1;background:var(--note);color:var(--note-ink);border-radius:12px;padding:12px 14px;font-weight:600}
+.done{background:var(--snow);border-radius:28px;padding:44px 32px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+.done svg{width:120px;height:auto}
+.done .cheer{transform-origin:50% 100%}
+.contact-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.contact-line a{color:inherit;font-weight:700}
+
+footer{background:var(--pine-deep);color:var(--on-pine-soft);font-size:1rem}
+footer .wrap{display:flex;gap:32px;flex-wrap:wrap;justify-content:space-between;padding-block:48px}
+footer p{max-width:40ch}
+@media (max-width:560px){.sec{padding-block:44px} body{font-size:17px} form{padding:24px} .card,.facts div{padding:26px} .panel{padding:28px} .steps li{padding-left:84px} .qa summary{padding:20px 22px} .qa .ans{padding:0 22px 22px}}
+
+/* ---------- motion (only when allowed) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .hiker svg.walk{animation:hop .32s ease-in-out infinite alternate}
+  .hiker .eye{animation:blink 5s infinite}
+  .flag{animation:wave 2.4s ease-in-out infinite}
+  .hero h1 .w{animation:wordIn .8s var(--ease-out) both;animation-delay:calc(var(--i)*80ms + .1s)}
+  .hero h1 .hl path{stroke-dasharray:240;stroke-dashoffset:240;animation:draw 1s var(--ease-out) 1s forwards}
+  .hero .copy>:not(h1){animation:rise .8s var(--ease-out) both;animation-delay:calc(var(--d,0)*1ms + 600ms)}
+  .hero .art .logo{animation:logoIn 1s var(--ease-out) .2s both}
+  .bubble{animation:bubIn .7s var(--ease-spring) both,bob 5s ease-in-out infinite;animation-delay:calc(var(--k)*180ms + .9s),calc(var(--k)*-1.3s)}
+  .opening .dot::after{animation:ping 2.2s ease-out infinite}
+  .clouds .c1{animation:drift 70s linear infinite}.clouds .c2{animation:drift 95s linear infinite -30s}.clouds .c3{animation:drift 80s linear infinite -50s}
+  .blob::before{animation:morph 14s ease-in-out infinite alternate}
+  .js-motion .burst.go i{animation:burst .9s var(--ease-out) both}
+  .done .cheer{animation:cheer .9s var(--ease-spring) 2}
+  ::view-transition-old(page){animation:vtOut .22s ease-in both}
+  ::view-transition-new(page){animation:vtIn .55s var(--ease-out) both}
+  .enter{animation:vtIn .55s var(--ease-out) both}
+  @supports (animation-timeline:view()){
+    .rv{animation:reveal linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+    .points li::before{animation:grow linear both;animation-timeline:view();animation-range:entry 20% entry 80%}
+    .steps li::before{animation:badge linear both;animation-timeline:view();animation-range:entry 10% entry 60%}
+  }
+}
+::view-transition-old(root),::view-transition-new(root){animation:none}
+main{view-transition-name:page}
+@keyframes wordIn{from{opacity:0;transform:translateY(.5em) rotate(3deg)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+@keyframes logoIn{from{opacity:0;transform:translateY(24px)}}
+@keyframes bubIn{from{opacity:0;scale:.4}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes ping{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.8);opacity:0}}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(120vw)}}
+@keyframes morph{0%{border-radius:58% 42% 55% 45%/48% 56% 44% 52%}50%{border-radius:44% 56% 42% 58%/56% 44% 58% 42%}100%{border-radius:52% 48% 60% 40%/42% 60% 40% 58%}}
+@keyframes hop{from{transform:translateY(0) rotate(-4deg)}to{transform:translateY(-12%) rotate(4deg)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes wave{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(-8deg) scaleX(.9)}}
+@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--bx),var(--by)) scale(.4)}}
+@keyframes cheer{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px) rotate(-4deg)}70%{transform:translateY(0) rotate(3deg)}}
+@keyframes vtOut{to{opacity:0;transform:translateY(-10px)}}
+@keyframes vtIn{from{opacity:0;transform:translateY(28px)}}
+@keyframes reveal{from{opacity:.15;transform:translateY(36px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes badge{from{transform:scale(.55) rotate(-20deg)}to{transform:none}}
+
+/* interest form: online sign-up not connected yet */
+.soonnote{background:var(--note);color:var(--note-ink);border-radius:20px;padding:22px 26px;display:flex;flex-direction:column;gap:8px}
+.soonnote h2{font-size:1.4rem;color:var(--note-ink)}
+.soonnote a{color:inherit;font-weight:700}
+form.is-soon{opacity:.5;filter:saturate(.6);pointer-events:none;user-select:none}
 </style>
 </head>
 <body>
-<main>
-  <svg class="logo" role="img" aria-label="Little Mountain Voices logo: a snow-capped mountain and a smiling little mountain inside a speech bubble" viewBox="0 0 240 200">
-    <defs><clipPath id="c"><ellipse cx="120" cy="96" rx="102" ry="78"/></clipPath></defs>
-    <path d="M56 152 L42 192 L98 170 Z" fill="#F7FAF8" stroke="#F7FAF8" stroke-width="6" stroke-linejoin="round"/>
-    <ellipse cx="120" cy="96" rx="109" ry="85" fill="#F7FAF8"/>
-    <ellipse cx="120" cy="96" rx="102" ry="78" fill="#BCDCEC"/>
-    <g clip-path="url(#c)"><g transform="translate(0 -8)">
-      <circle cx="58" cy="68" r="11" fill="#F7FAF8"/>
-      <path d="M0 150 Q50 112 98 136 T176 126 T240 146 V210 H0 Z" fill="#8FBAD6"/>
-      <path d="M36 172 L92 52 Q100 38 108 52 L164 172 Z" fill="#1F5D4C"/>
-      <path d="M100 45 Q105 45 108 52 L164 172 H120 L104 98 Z" fill="#174A3C"/>
-      <path d="M92 52 Q100 38 108 52 L123.5 86 L113 78 L106 92 L98 80 L90 94 L84 82 L76.5 86 Z" fill="#F7FAF8"/>
-      <path d="M100 45 Q105 45 108 52 L123.5 86 L113 78 L106 92 L103 70 Z" fill="#DCEEF5"/>
-      <path d="M116 174 L150 113 Q158 100 166 113 L200 174 Z" fill="#8CC2A0"/>
-      <path d="M158 106.5 Q163 106.5 166 113 L200 174 H172 L161 132 Z" fill="#74B28D"/>
-      <path d="M150 113 Q158 100 166 113 L173.5 127 L165.5 122 L158 130 L150.5 122 L142.5 127 Z" fill="#F7FAF8"/>
-      <circle cx="143" cy="154" r="4" fill="#F7FAF8" opacity="0.5"/><circle cx="173" cy="154" r="4" fill="#F7FAF8" opacity="0.5"/>
-      <circle cx="150" cy="146" r="3.3" fill="#16302B"/><circle cx="166" cy="146" r="3.3" fill="#16302B"/>
-      <circle cx="151.2" cy="144.8" r="1.1" fill="#FFFFFF"/><circle cx="167.2" cy="144.8" r="1.1" fill="#FFFFFF"/>
-      <path d="M152 153.5 Q158 160.5 164 153.5" fill="none" stroke="#16302B" stroke-width="2.6" stroke-linecap="round"/>
-      <path d="M0 170 Q60 156 120 169 T240 165 V230 H0 Z" fill="#174A3C"/>
-      <path d="M50 148 l7 11 h-14 z M50 155 l9 13 h-18 z" fill="#2A7A62"/>
-      <path d="M67 153 l6 9 h-12 z M67 159 l7.5 10 h-15 z" fill="#2A7A62"/>
-      <path d="M208 154 l5.5 9 h-11 z M208 160 l7 10 h-14 z" fill="#2A7A62"/>
-    </g></g>
-  </svg>
-  <h1>Little Mountain <span>Voices</span></h1>
-  <p class="slogan">Big progress starts with little words.</p>
-  <p class="about">Speech therapy for children 18 months to 10 years old, in your home, out in the community, or by teletherapy, from Spokane Valley to Coeur d'Alene.</p>
-  <p class="open">Opening August 2027</p>
+<svg class="defs" aria-hidden="true"><defs>
+  <g id="r-green-white"><path d="M0 110 L110 62 L210 100 L350 36 L470 104 L610 54 L750 108 L900 44 L1040 102 L1170 60 L1300 98 L1440 48 V170 H0 Z" fill="#2A7A62"/><path d="M0 130 L160 84 L300 122 L470 70 L640 126 L820 80 L980 124 L1150 78 L1300 120 L1440 90 V170 H0 Z" fill="#8CC2A0"/><path d="M0 138 Q180 92 360 132 T720 128 T1080 134 T1440 116 V171 H0 Z" fill="#FFFFFF"/></g>
+  <g id="r-white-sky"><path d="M0 100 Q200 34 420 88 T860 74 T1440 58 V170 H0 Z" fill="#EDF6FA"/><path d="M0 130 Q260 66 520 116 T1000 108 T1440 100 V171 H0 Z" fill="#DCEEF5"/></g>
+  <g id="r-sky-white"><path d="M0 80 L140 34 L260 76 L420 22 L560 80 L720 40 L880 82 L1040 30 L1200 78 L1320 44 L1440 72 V170 H0 Z" fill="#BCDCEC"/><path d="M0 120 Q240 60 480 110 T960 106 T1440 92 V171 H0 Z" fill="#FFFFFF"/></g>
+  <g id="r-white-green"><path d="M0 104 L150 50 L280 96 L450 22 L600 98 L780 40 L940 102 L1110 30 L1270 94 L1440 54 V170 H0 Z" fill="#8CC2A0"/><path d="M0 134 L200 74 L360 126 L560 60 L760 132 L960 76 L1140 128 L1300 84 L1440 116 V171 H0 Z" fill="#1F5D4C"/><path d="M200 74 L232 85 L214 90 L196 86 L176 94 L170 84 Z M560 60 L594 72 L574 78 L556 72 L536 82 L528 71 Z M960 76 L992 87 L974 92 L956 87 L938 96 L930 86 Z" fill="#F7FAF8"/></g>
+</defs></svg>
 
-  <div class="countdown" id="countdown" hidden>
-    <div class="tiles" aria-hidden="true">
-      <div class="tile"><span class="num" data-unit="d">--</span><span class="lbl">Days</span></div>
-      <div class="tile"><span class="num" data-unit="h">--</span><span class="lbl"><span class="long">Hours</span><span class="short">Hrs</span></span></div>
-      <div class="tile"><span class="num" data-unit="m">--</span><span class="lbl"><span class="long">Minutes</span><span class="short">Min</span></span></div>
-      <div class="tile"><span class="num" data-unit="s">--</span><span class="lbl"><span class="long">Seconds</span><span class="short">Sec</span></span></div>
-    </div>
-    <p class="until">until we open<span class="sr" id="until-sr"></span></p>
-  </div>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"><i id="progress"></i></div>
 
-  <section class="area" aria-labelledby="area-title">
-    <h2 id="area-title">Where we'll visit</h2>
-    <p class="about">We come to your home, or meet your child where they are in the community, like a playground or the library.</p>
-    <div class="map" id="map" role="img" aria-label="Simple map of the service area: Spokane Valley and Liberty Lake in Washington; Post Falls, Coeur d'Alene, Hayden and Rathdrum in Idaho.">
-      <svg viewBox="0 0 640 360" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 300 Q120 270 240 296 T480 290 T640 300 V360 H0 Z" fill="#DCEEF5"/>
-        <path d="M500 300 Q560 268 600 300 Q590 345 540 352 Q500 340 500 300 Z" fill="#8FBAD6"/>
-        <path d="M40 60 l26 40 h-52 z M66 74 l20 32 h-40 z M600 40 l24 38 h-48 z M572 60 l18 30 h-36 z" fill="#8CC2A0" opacity=".55"/>
-        <line x1="282" y1="10" x2="282" y2="350" stroke="#BCDCEC" stroke-width="3" stroke-dasharray="10 8"/>
-        <path class="road" d="M51 209 L192 202 L358 216 L538 259"/>
-        <path class="road" d="M538 259 L499 108 L346 86 L358 216"/>
-        <g class="pin" style="--i:0"><circle cx="51" cy="209" r="11" fill="#1F5D4C"/><circle cx="51" cy="209" r="4" fill="#FFFFFF"/></g>
-        <g class="pin" style="--i:1"><circle cx="192" cy="202" r="11" fill="#1F5D4C"/><circle cx="192" cy="202" r="4" fill="#FFFFFF"/></g>
-        <g class="pin" style="--i:2"><circle cx="358" cy="216" r="11" fill="#1F5D4C"/><circle cx="358" cy="216" r="4" fill="#FFFFFF"/></g>
-        <g class="pin" style="--i:3"><circle cx="538" cy="259" r="11" fill="#1F5D4C"/><circle cx="538" cy="259" r="4" fill="#FFFFFF"/></g>
-        <g class="pin" style="--i:4"><circle cx="499" cy="108" r="11" fill="#1F5D4C"/><circle cx="499" cy="108" r="4" fill="#FFFFFF"/></g>
-        <g class="pin" style="--i:5"><circle cx="346" cy="86" r="11" fill="#1F5D4C"/><circle cx="346" cy="86" r="4" fill="#FFFFFF"/></g>
+<header class="top pine" id="top">
+  <div class="wrap bar">
+    <a class="brand" href="#home" aria-label="Little Mountain Voices, home">
+      <svg aria-hidden="true" width="52" height="52" viewBox="0 0 64 64">
+        <defs><clipPath id="hdrIcon"><ellipse cx="33" cy="28" rx="24.5" ry="19.5"/></clipPath></defs>
+        <path d="M13 42 L8 59 L28 49 Z" fill="#F7FAF8" stroke="#F7FAF8" stroke-width="2" stroke-linejoin="round"/>
+        <ellipse cx="33" cy="28" rx="29" ry="24" fill="#F7FAF8"/>
+        <ellipse cx="33" cy="28" rx="24.5" ry="19.5" fill="#BCDCEC"/>
+        <g clip-path="url(#hdrIcon)">
+          <path d="M6 52 L25 17 Q28 12 31 17 L50 52 Z" fill="#1F5D4C"/>
+          <path d="M25 17 Q28 12 31 17 L36.2 26.5 L32 24 L28 29 L24 24 L19.8 26.5 Z" fill="#F7FAF8"/>
+          <path d="M30 52 L42 31.5 Q45 27 48 31.5 L60 52 Z" fill="#8CC2A0"/>
+        </g>
       </svg>
-      <span class="st" style="left:calc(44% - 48px)" aria-hidden="true">WA</span><span class="st" style="left:calc(44% + 14px)" aria-hidden="true">ID</span>
-      <span class="town" style="left:2%;top:63%" aria-hidden="true">Spokane Valley</span>
-      <span class="town" style="left:30%;top:56%;transform:translate(-50%,-100%) translateY(-14px)" aria-hidden="true">Liberty Lake</span>
-      <span class="town" style="left:calc(56% - 14px);top:64%" aria-hidden="true">Post Falls</span>
-      <span class="town" style="right:4%;top:77%" aria-hidden="true">Coeur d'Alene</span>
-      <span class="town" style="left:78%;top:30%;transform:translate(-50%,-100%) translateY(-12px)" aria-hidden="true">Hayden</span>
-      <span class="town" style="left:54%;top:24%;transform:translate(-50%,-100%) translateY(-12px)" aria-hidden="true">Rathdrum</span>
-      <span class="note" aria-hidden="true">Not to scale</span>
+      <span>Little Mountain<br><span>Voices</span></span>
+    </a>
+    <div class="navarea">
+      <nav class="main" id="mainnav" aria-label="Pages">
+        <a href="#what-to-look-for" style="--i:0">What to look for</a>
+        <a href="#services" style="--i:1">Services</a>
+        <a href="#how-it-works" style="--i:2">How it works</a>
+        <a href="#meet-kodee" style="--i:3">Meet Kodee</a>
+        <a href="#questions" style="--i:4">Questions</a>
+        <a class="navcta" href="#interest-list" style="--i:5">Join the interest list</a>
+      </nav>
+      <a class="pill" href="#interest-list">Interest list</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainnav"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">Menu</span></button>
     </div>
-  </section>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ HOME ============ -->
+<div data-view="home">
+<section class="pine hero">
+  <div class="clouds" aria-hidden="true"><span class="c1"></span><span class="c2"></span><span class="c3"></span></div>
+  <div class="wrap">
+    <div class="copy stack">
+      <h1 tabindex="-1"><span class="w" style="--i:0">Big</span> <span class="w" style="--i:1">progress</span> <span class="w" style="--i:2">starts</span> <span class="w" style="--i:3">with</span> <span class="w hl" style="--i:4">little<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12 Q50 2 100 10 T197 8"/></svg></span> <span class="w hl" style="--i:5">words.<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 10 Q60 16 120 8 T197 11"/></svg></span></h1>
+      <p class="lede" style="--d:0">Speech therapy for children 18 months to 10 years old, in your home, out in the community, or by teletherapy, from Spokane Valley to Coeur d'Alene.</p>
+      <p class="opening" style="--d:120"><span class="dot" aria-hidden="true"></span>Opening August 2027.<span class="soon" id="countdown" hidden></span></p>
+      <a class="btn btn-light" href="#interest-list" style="--d:240">Join the interest list <span class="arrow" aria-hidden="true">&rarr;</span></a>
+    </div>
+    <div class="art" id="heroArt">
+      <div class="glow" aria-hidden="true"></div>
+      <svg class="logo" role="img" aria-label="Little Mountain Voices logo: a snow-capped mountain and a smiling little mountain inside a speech bubble" viewBox="0 0 240 200">
+        <defs><clipPath id="heroLogo"><ellipse cx="120" cy="96" rx="102" ry="78"/></clipPath></defs>
+        <path d="M56 152 L42 192 L98 170 Z" fill="#F7FAF8" stroke="#F7FAF8" stroke-width="6" stroke-linejoin="round"/>
+        <ellipse cx="120" cy="96" rx="109" ry="85" fill="#F7FAF8"/>
+        <ellipse cx="120" cy="96" rx="102" ry="78" fill="#BCDCEC"/>
+        <g clip-path="url(#heroLogo)"><g transform="translate(0 -8)">
+          <circle cx="58" cy="68" r="11" fill="#F7FAF8"/>
+          <path d="M0 150 Q50 112 98 136 T176 126 T240 146 V210 H0 Z" fill="#8FBAD6"/>
+          <path d="M36 172 L92 52 Q100 38 108 52 L164 172 Z" fill="#1F5D4C"/>
+          <path d="M100 45 Q105 45 108 52 L164 172 H120 L104 98 Z" fill="#174A3C"/>
+          <path d="M92 52 Q100 38 108 52 L123.5 86 L113 78 L106 92 L98 80 L90 94 L84 82 L76.5 86 Z" fill="#F7FAF8"/>
+          <path d="M100 45 Q105 45 108 52 L123.5 86 L113 78 L106 92 L103 70 Z" fill="#DCEEF5"/>
+          <path d="M116 174 L150 113 Q158 100 166 113 L200 174 Z" fill="#8CC2A0"/>
+          <path d="M158 106.5 Q163 106.5 166 113 L200 174 H172 L161 132 Z" fill="#74B28D"/>
+          <path d="M150 113 Q158 100 166 113 L173.5 127 L165.5 122 L158 130 L150.5 122 L142.5 127 Z" fill="#F7FAF8"/>
+          <circle cx="143" cy="154" r="4" fill="#F7FAF8" opacity="0.5"/><circle cx="173" cy="154" r="4" fill="#F7FAF8" opacity="0.5"/>
+          <circle cx="150" cy="146" r="3.3" fill="#16302B"/><circle cx="166" cy="146" r="3.3" fill="#16302B"/>
+          <circle cx="151.2" cy="144.8" r="1.1" fill="#FFFFFF"/><circle cx="167.2" cy="144.8" r="1.1" fill="#FFFFFF"/>
+          <path d="M152 153.5 Q158 160.5 164 153.5" fill="none" stroke="#16302B" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M0 170 Q60 156 120 169 T240 165 V230 H0 Z" fill="#174A3C"/>
+          <path d="M50 148 l7 11 h-14 z M50 155 l9 13 h-18 z" fill="#2A7A62"/>
+          <path d="M67 153 l6 9 h-12 z M67 159 l7.5 10 h-15 z" fill="#2A7A62"/>
+          <path d="M208 154 l5.5 9 h-11 z M208 160 l7 10 h-14 z" fill="#2A7A62"/>
+        </g></g>
+      </svg>
+      <div class="bubble l b1" style="--k:0" aria-hidden="true"><small>Around 2</small>"more milk"</div>
+      <div class="bubble r b2" style="--k:1" aria-hidden="true"><small>Around 2&frac12;</small>"doggie run"</div>
+      <div class="bubble r b3" style="--k:2" aria-hidden="true"><small>Around 5</small>"You be the doctor."</div>
+      <div class="bubble l b4" style="--k:3" aria-hidden="true"><small>Around 3</small>"where?" "why?"</div>
+    </div>
+  </div>
+  <svg class="hero-ridge" id="heroRidge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none">
+    <g data-f="0.18"><path d="M0 110 L110 62 L210 100 L350 36 L470 104 L610 54 L750 108 L900 44 L1040 102 L1170 60 L1300 98 L1440 48 V200 H0 Z" fill="#2A7A62"/></g>
+    <g data-f="0.09"><path d="M0 130 L160 84 L300 122 L470 70 L640 126 L820 80 L980 124 L1150 78 L1300 120 L1440 90 V200 H0 Z" fill="#8CC2A0"/></g>
+    <g><path d="M0 138 Q180 92 360 132 T720 128 T1080 134 T1440 116 V171 H0 Z" fill="#FFFFFF"/></g>
+  </svg>
+</section>
+
+<section class="sec">
+  <div class="wrap stack-lg">
+    <div class="stack center rv">
+      <p class="eyebrow">For parents</p>
+      <h2>Wondering if your child's speech is on track?</h2>
+      <p class="text">Every child learns to talk at their own pace. If something doesn't feel right, it's worth asking.</p>
+    </div>
+    <div class="panel rv">
+      <h3>At any age, it's worth asking if</h3>
+      <div class="body stack">
+        <ul class="checks">
+          <li>Your child stops using words or skills they used to have</li>
+          <li>By age 2, your child uses fewer than 50 words or isn't putting two words together</li>
+          <li>By age 4, people outside the family understand less than half of what they say</li>
+          <li>They get frustrated trying to tell you something</li>
+          <li>You have a feeling something isn't clicking yet</li>
+        </ul>
+        <p><a class="more" href="#what-to-look-for">See what to look for at each age &rarr;</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-white-sky"/></svg>
+<section class="skyband">
+  <div class="wrap stack-lg center" style="padding-block:32px 24px">
+    <div class="stack center rv">
+      <p class="eyebrow">What we help with</p>
+      <h2>Help for children who are still finding their words</h2>
+    </div>
+    <div class="cards">
+      <div class="card rv"><span class="ico" aria-hidden="true"><svg viewBox="0 0 34 34"><path d="M6 8h22a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H15l-6 5v-5H6a3 3 0 0 1-3-3V11a3 3 0 0 1 3-3z" fill="#1F5D4C"/><path d="M10 16h2M15 13v6M19 11v10M23 14v4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></span><h3>Speech sounds</h3><small>Ages 3 to 10</small><p>For children who are hard to understand, leave sounds out, or swap one sound for another.</p></div>
+      <div class="card rv"><span class="ico" aria-hidden="true"><svg viewBox="0 0 34 34"><rect x="3" y="6" width="17" height="13" rx="6.5" fill="#2E6F9E"/><path d="M8 19l-2 5 6-5z" fill="#2E6F9E"/><rect x="14" y="14" width="17" height="13" rx="6.5" fill="#1F5D4C"/><path d="M26 27l2 4-6-4z" fill="#1F5D4C"/><circle cx="19" cy="20.5" r="1.4" fill="#fff"/><circle cx="23" cy="20.5" r="1.4" fill="#fff"/><circle cx="27" cy="20.5" r="1.4" fill="#fff"/></svg></span><h3>Early language</h3><small>Ages 18 months to 5, and older children when needed</small><p>For toddlers and preschoolers who are late to talk or use fewer words than expected.</p></div>
+      <div class="card rv"><span class="ico" aria-hidden="true"><svg viewBox="0 0 34 34"><rect x="6" y="4" width="20" height="26" rx="4" fill="#1F5D4C"/><path d="M11 12h10M11 17h10M11 22h6" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><circle cx="25" cy="25" r="6" fill="#8CC2A0"/><path d="M22.5 25l1.8 1.8 3.4-3.6" fill="none" stroke="#16302B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h3>Evaluations</h3><small>New clients and second opinions</small><p>A full look at your child's speech and language, with a written report and a clear plan.</p></div>
+    </div>
+    <p><a class="more" href="#services">See our services</a> &nbsp;·&nbsp; <a class="more" href="#how-it-works">How it works</a></p>
+  </div>
+  <svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-sky-white"/></svg>
+</section>
+
+<section class="sec" style="padding-top:32px">
+  <div class="wrap about">
+    <div class="blob rv"><img src="assets/kodee.jpg" alt="Kodee Welch standing outdoors, smiling" width="360" height="450"></div>
+    <div class="text stack rv">
+      <p class="eyebrow">Your therapist</p>
+      <h2>Meet Kodee</h2>
+      <p>Kodee Welch, M.S., CCC-SLP, is a speech-language pathologist who works only with children. Your child sees her at every visit.</p>
+      <p><a class="more" href="#meet-kodee">More about Kodee &rarr;</a></p>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ============ WHAT TO LOOK FOR ============ -->
+<div data-view="what-to-look-for" hidden>
+<section class="pine head">
+  <div class="wrap stack">
+    <h1 tabindex="-1">What to look for</h1>
+    <p class="lede">A parent's guide to speech and language from 18 months to 8 years and up, and when it's worth asking for help.</p>
+  </div>
+  <svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-green-white"/></svg>
+</section>
+
+<section class="sec" style="padding-top:40px">
+  <div class="wrap stack-lg">
+    <div class="stack center">
+      <h2>What to expect, by age</h2>
+      <p class="text">Children learn to talk at different speeds, so these are typical skills, not deadlines. If your child isn't doing something yet, it doesn't mean something is wrong. It means it's worth asking.</p>
+    </div>
+    <p class="fine" style="text-align:center;margin-top:-20px">Choose an age on the trail to see what is typical. On a phone, you can also swipe the card.</p>
+    <div class="trail" id="trail">
+      <div class="scene">
+        <svg viewBox="0 0 480 580" aria-hidden="true">
+          <defs>
+            <clipPath id="sceneClip"><rect width="480" height="580" rx="36"/></clipPath>
+            <mask id="trailMask" maskUnits="userSpaceOnUse" x="0" y="0" width="480" height="580"><path id="trailMaskPath" d="M115 515 C210 512 310 498 330 455 S200 418 165 395 S305 372 320 335 S205 300 190 275 S290 245 300 210 S262 165 250 135" fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round"/></mask>
+          </defs>
+          <g clip-path="url(#sceneClip)">
+            <rect width="480" height="580" fill="#BCDCEC"/>
+            <circle cx="84" cy="92" r="28" fill="#F7FAF8"/>
+            <g class="scloud"><ellipse cx="392" cy="120" rx="46" ry="13" fill="#FFFFFF"/><ellipse cx="366" cy="110" rx="26" ry="11" fill="#FFFFFF"/></g>
+            <ellipse class="scloud2" cx="70" cy="214" rx="36" ry="10" fill="#FFFFFF"/>
+            <path d="M0 440 Q80 370 170 420 T330 400 T480 420 V580 H0 Z" fill="#8FBAD6"/>
+            <path d="M0 580 L225 70 Q250 30 275 70 L480 580 Z" fill="#1F5D4C"/>
+            <path d="M250 40 Q265 45 275 70 L480 580 H340 L262 240 Z" fill="#174A3C"/>
+            <path d="M225 70 Q250 30 275 70 L298 128 L280 116 L266 138 L250 116 L232 140 L216 118 L199 130 Z" fill="#FFFFFF"/>
+            <path d="M250 40 Q265 45 275 70 L298 128 L280 116 L266 138 L258 90 Z" fill="#DCEEF5"/>
+            <path d="M250 44 V8" stroke="#16302B" stroke-width="3" stroke-linecap="round"/><path class="flag" d="M252 8 L280 17 L252 27 Z" fill="#2E6F9E"/>
+            <path id="trailPath" d="M115 515 C210 512 310 498 330 455 S200 418 165 395 S305 372 320 335 S205 300 190 275 S290 245 300 210 S262 165 250 135" fill="none" stroke="#8CC2A0" stroke-width="5" stroke-dasharray="1 13" stroke-linecap="round"/>
+            <path d="M115 515 C210 512 310 498 330 455 S200 418 165 395 S305 372 320 335 S205 300 190 275 S290 245 300 210 S262 165 250 135" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-dasharray="1 13" stroke-linecap="round" mask="url(#trailMask)"/>
+            <path d="M0 554 Q120 526 240 550 T480 542 V580 H0 Z" fill="#174A3C"/>
+            <path d="M34 522 l11 17 h-22 z M34 533 l14 20 h-28 z M60 532 l9 14 h-18 z M60 541 l11 16 h-22 z M440 520 l10 16 h-20 z M440 530 l13 19 h-26 z" fill="#2A7A62"/>
+          </g>
+        </svg>
+        <div class="burst" id="burst" aria-hidden="true"></div>
+        <div class="hiker" id="hiker" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M3 38 L17 9 Q20 4 23 9 L37 38 Z" fill="#8CC2A0"/><path d="M20 5.5 Q22 6 23 9 L37 38 H27 L21.5 20 Z" fill="#74B28D"/><path d="M17 9 Q20 4 23 9 L26.5 16 L23 14 L20 18 L17 14 L13.5 16 Z" fill="#FFFFFF"/><circle cx="12.5" cy="30" r="1.8" fill="#F7FAF8" opacity=".55"/><circle cx="27.5" cy="30" r="1.8" fill="#F7FAF8" opacity=".55"/><circle class="eye" cx="16" cy="26" r="1.9" fill="#16302B"/><circle class="eye" cx="24" cy="26" r="1.9" fill="#16302B"/><path d="M16.5 30.5 Q20 34 23.5 30.5" fill="none" stroke="#16302B" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="stops" role="tablist" aria-label="Choose an age">
+        <button type="button" role="tab" class="stop" id="stop-0" aria-controls="age-0" aria-selected="true" tabindex="0" style="left:23.96%;top:88.79%">18 months</button>
+        <button type="button" role="tab" class="stop" id="stop-1" aria-controls="age-1" aria-selected="false" tabindex="-1" style="left:68.75%;top:78.45%">2 years</button>
+        <button type="button" role="tab" class="stop" id="stop-2" aria-controls="age-2" aria-selected="false" tabindex="-1" style="left:34.38%;top:68.10%">2&frac12; years</button>
+        <button type="button" role="tab" class="stop" id="stop-3" aria-controls="age-3" aria-selected="false" tabindex="-1" style="left:66.67%;top:57.76%">3 years</button>
+        <button type="button" role="tab" class="stop" id="stop-4" aria-controls="age-4" aria-selected="false" tabindex="-1" style="left:39.58%;top:47.41%">4 years</button>
+        <button type="button" role="tab" class="stop" id="stop-5" aria-controls="age-5" aria-selected="false" tabindex="-1" style="left:62.50%;top:36.21%">5 years</button>
+        <button type="button" role="tab" class="stop" id="stop-6" aria-controls="age-6" aria-selected="false" tabindex="-1" style="left:52.08%;top:23.28%">6 to 8+ years</button>
+        </div>
+      </div>
+      <div class="agecard" id="agecard">
+        <div class="agemeter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="agepanels">
+        <section role="tabpanel" class="agepanel" id="age-0" aria-labelledby="stop-0">
+          <h3>Around 18 months</h3>
+          <div class="age-body">
+            <div class="mile"><b>Words</b><p>Says about 50 words on average. Uses gestures to get a message across, like pointing to show you something, waving, and shaking their head "no."</p></div>
+            <div class="mile"><b>Understanding</b><p>Follows simple one-step directions, like "give me the ball."</p></div>
+            <div class="mile"><b>Play</b><p>Plays mostly on their own and watches other children play. Starts pretending with their own body, like pretending to sleep or drinking from an empty cup. Uses everyday things the right way, like a spoon or a hairbrush.</p></div>
+          </div>
+        </section>
+        <section role="tabpanel" class="agepanel" id="age-1" aria-labelledby="stop-1">
+          <h3>Around 2 years</h3>
+          <div class="age-body">
+            <div class="mile"><b>Words</b><p>Says about 200 to 300 words and puts two words together, like "more milk."</p></div>
+            <div class="mile"><b>Understanding</b><p>Follows two-step directions, like "get your shoes and bring them to me."</p></div>
+            <div class="mile"><b>Speech sounds and clarity</b><p>Family understands much of what they say. Strangers often don't yet, and that's typical.</p></div>
+            <div class="mile"><b>Play</b><p>Plays beside other children more than with them. Pretends with dolls and stuffed animals, like feeding a doll or tucking it in with a blanket, and acts out home life, like cooking dinner. Each pretend action is short and stands on its own.</p></div>
+          </div>
+        </section>
+        <section role="tabpanel" class="agepanel" id="age-2" aria-labelledby="stop-2">
+          <h3>Around 2&frac12; years</h3>
+          <div class="age-body">
+            <div class="mile"><b>Words</b><p>Says about 450 words. Uses words like "I," "me" and "we," and joins words with an action word, like "doggie run."</p></div>
+            <div class="mile"><b>Speech sounds and clarity</b><p>Uses sounds like p, b, m, n, d, h and w in many words.</p></div>
+            <div class="mile"><b>Play</b><p>Still plays mostly beside other children and starts copying what they do. Acts out things they've seen less often, like a visit to the doctor or a day at school. Needs toys that look like the real thing, and switches roles quickly.</p></div>
+          </div>
+        </section>
+        <section role="tabpanel" class="agepanel" id="age-3" aria-labelledby="stop-3">
+          <h3>Around 3 years</h3>
+          <div class="age-body">
+            <div class="mile"><b>Words</b><p>Says about 1,000 words. Uses short sentences and asks "who," "what," "where" and "why" questions.</p></div>
+            <div class="mile"><b>Understanding</b><p>Answers simple "what" and "where" questions, like "Where is your cup?" Follows directions with "in," "on" and "under."</p></div>
+            <div class="mile"><b>Speech sounds and clarity</b><p>Says p, b, m, n, d, h and w clearly. Strangers understand a little under half of what they say, on average.</p></div>
+            <div class="mile"><b>Play</b><p>Starts playing with other children: sharing toys and talking during play. Pretend play now has steps in order, like mixing a cake, baking it, serving it and washing the dishes. The story grows as they play instead of being planned.</p></div>
+          </div>
+        </section>
+        <section role="tabpanel" class="agepanel" id="age-4" aria-labelledby="stop-4">
+          <h3>Around 4 years</h3>
+          <div class="age-body">
+            <div class="mile"><b>Words</b><p>Says about 1,500 words and sentences of four or more words. Tells you about something that happened in their day.</p></div>
+            <div class="mile"><b>Understanding</b><p>Follows directions with location words like "behind," "next to" and "in front of."</p></div>
+            <div class="mile"><b>Speech sounds and clarity</b><p>Adds t, k, g, f, y and the "ng" in "sing." Strangers understand at least half of what they say.</p></div>
+            <div class="mile"><b>Play</b><p>Plays with other children toward a shared idea and takes turns. Uses one thing to stand for another, like a block as a phone, and gives dolls and puppets their own voices. Starts planning play ahead, and builds things they've seen out of blocks, like a house or a bridge.</p></div>
+          </div>
+        </section>
+        <section role="tabpanel" class="agepanel" id="age-5" aria-labelledby="stop-5">
+          <h3>Around 5 years</h3>
+          <div class="age-body">
+            <div class="mile"><b>Words</b><p>Says about 2,000 words or more. Tells a story with a beginning and end, and keeps a conversation going.</p></div>
+            <div class="mile"><b>Understanding</b><p>Follows directions with three steps. Understands order words like "first," "next" and "last," and time words like "yesterday" and "tomorrow."</p></div>
+            <div class="mile"><b>Speech sounds and clarity</b><p>Adds s, z, l, v, sh, ch and j. Strangers understand at least 75% of what they say. Sounds like r and th often keep developing until 6 or 7.</p></div>
+            <div class="mile"><b>Play</b><p>Plays together with other children toward a shared goal, including games with rules. Plans a pretend story ahead of time and gathers the toys and friends they need, like "You be the doctor." Can imagine a whole scene without real-looking toys.</p></div>
+          </div>
+        </section>
+        <section role="tabpanel" class="agepanel" id="age-6" aria-labelledby="stop-6">
+          <h3>Ages 6 to 8 and up</h3>
+          <div class="age-body">
+            <div class="mile"><b>Words</b><p>Tells longer stories with details in order, explains how and why, and uses sentences with words like "because" and "if." Vocabulary keeps growing through reading and school.</p></div>
+            <div class="mile"><b>Understanding</b><p>Follows longer directions in the classroom and starts to understand jokes, riddles and words with more than one meaning.</p></div>
+            <div class="mile"><b>Speech sounds and clarity</b><p>Says all speech sounds clearly, including r and th, by about age 7. Strangers understand nearly everything they say.</p></div>
+            <div class="mile"><b>Play</b><p>Plays team and board games with rules, works out the rules with friends, and handles winning and losing.</p></div>
+          </div>
+        </section>
+        </div>
+        <div class="agenav"><button type="button" id="age-prev">&larr; Younger</button><span class="hint">Arrow keys work too</span><button type="button" id="age-next">Older &rarr;</button></div>
+      </div>
+    </div>
+    <div class="panel rv">
+      <h3>At any age, it's worth asking if</h3>
+      <ul class="body checks">
+        <li>Your child stops using words or skills they used to have</li>
+        <li>By age 2, your child uses fewer than 50 words or isn't putting two words together</li>
+        <li>By age 4, people outside the family understand less than half of what they say</li>
+        <li>They get frustrated trying to tell you something</li>
+        <li>You have a feeling something isn't clicking yet</li>
+      </ul>
+    </div>
+    <p class="fine" style="text-align:center">Milestones adapted from: ASHA's Developmental Milestones, CDC's "Learn the Signs. Act Early." checklists, Crowe and McLeod (2020), Hustad and colleagues (2021), LinguiSystems Guide to Communication Milestones, Parten (1932), and Westby's Symbolic Play Scale (2000).</p>
+  </div>
+</section>
+
+<svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-white-sky"/></svg>
+<section class="skyband">
+  <div class="wrap stack-lg" style="padding-block:32px 24px">
+    <div class="stack center rv">
+      <p class="eyebrow">Why ask now</p>
+      <h2>"Wait and see" is common advice. Here's what waiting can't tell you.</h2>
+    </div>
+    <ul class="points">
+      <li class="rv"><h3>Many late talkers catch up. Some don't.</h3><p>Many children who talk late catch up by ages 3 to 5. Others go on to have trouble with language or reading, and early on it is hard to tell which child is which.</p></li>
+      <li class="rv"><h3>An evaluation gives you an answer.</h3><p>You leave with one of two things: peace of mind that your child is on track, or a clear plan for what to work on.</p></li>
+      <li class="rv"><h3>We work alongside school and state services.</h3><p>Therapy with Little Mountain Voices can work together with speech services your child gets at school or through other public programs. We coordinate with your child's team so everyone is working toward the same goals.</p></li>
+    </ul>
+  </div>
+  <svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-sky-white"/></svg>
+</section>
+
+<section class="sec" style="padding-top:32px">
+  <div class="wrap stack-lg">
+    <div class="stack center rv"><h2>Speech and language are two different things</h2></div>
+    <div class="cards">
+      <div class="card rv"><span class="tag">Speech</span><h3>How your child says sounds and words</h3><p>A child with a speech sound difficulty knows what they want to say, but the sounds come out unclear, missing or swapped. "Wabbit" for "rabbit," or "tar" for "car."</p><div class="demo" aria-hidden="true"><span class="say">Sounds like</span><span class="swap" data-swap><span>wabbit</span><span>rabbit</span></span><span class="say">means</span><span>rabbit</span></div><p><a class="more" href="#services">Speech sound therapy &rarr;</a></p></div>
+      <div class="card rv"><span class="tag">Language</span><h3>The words your child uses and understands</h3><p>A child with a language delay may use few words, not yet combine them, or have trouble following what is said to them.</p><div class="demo" aria-hidden="true"><span class="say">Building up</span><span class="swap" data-swap><span>"milk"</span><span>"more milk"</span></span></div><p><a class="more" href="#services">Early language therapy &rarr;</a></p></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ============ SERVICES ============ -->
+<div data-view="services" hidden>
+<section class="pine head">
+  <div class="wrap stack">
+    <h1 tabindex="-1">Services</h1>
+    <p class="lede">Every child starts with an evaluation, so therapy is built around what your child needs.</p>
+  </div>
+  <svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-green-white"/></svg>
+</section>
+
+<section class="sec" style="padding-top:40px">
+  <div class="wrap stack-lg">
+    <div>
+      <div class="service rv">
+        <div class="name"><h2>Speech sounds</h2><span class="tag">Ages 3 to 10</span></div>
+        <div class="body"><p>For children who are hard to understand, leave sounds out, or swap one sound for another. We work on clear speech through play and practice.</p><ul class="checks"><li>Weekly sessions at home or by teletherapy</li><li>Short practice to do between visits</li></ul></div>
+      </div>
+      <div class="service rv">
+        <div class="name"><h2>Early language</h2><span class="tag">Ages 18 months to 5, and older children when needed</span></div>
+        <div class="body"><p>For toddlers and preschoolers who are late to talk or use fewer words than expected. Parents learn simple ways to build language into the day.</p><ul class="checks"><li>Sessions at home, with a parent or caregiver taking part</li><li>Ideas that fit into meals, play and bedtime</li></ul></div>
+      </div>
+      <div class="service rv">
+        <div class="name"><h2>Evaluations</h2><span class="tag">New clients and second opinions</span></div>
+        <div class="body"><p>A full look at your child's speech and language, followed by a written report and a clear plan you can share with your child's doctor or school.</p></div>
+      </div>
+    </div>
+    <div class="panel rv" style="background:var(--snow)">
+      <h3>Experience with autism</h3>
+      <div class="body stack">
+        <p>Kodee currently works at Cleveland Clinic Children's Center for Autism, where she evaluates and treats children from 18 months to 8 years old, both with and without an autism diagnosis.</p>
+        <ul class="checks">
+          <li>Sessions follow your child's interests, pace and sensory needs</li>
+          <li>Every way of communicating counts: words, gestures, pictures and devices</li>
+          <li>Parents learn what works, so progress carries into daily life</li>
+        </ul>
+        <p class="fine">Little Mountain Voices does not diagnose autism. We work on communication, with or without a diagnosis.</p>
+      </div>
+    </div>
+    <div class="panel rv">
+      <h3>Where we visit</h3>
+      <div class="body stack">
+        <p>Most sessions happen in your home, from Spokane Valley into North Idaho. Teletherapy is available for school-age children and for families farther out.</p>
+        <div class="map" id="map" role="img" aria-label="Simple map of the service area: Spokane Valley and Liberty Lake in Washington; Post Falls, Coeur d'Alene, Hayden and Rathdrum in Idaho.">
+          <svg viewBox="0 0 640 360" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 300 Q120 270 240 296 T480 290 T640 300 V360 H0 Z" fill="#DCEEF5"/>
+            <path d="M500 300 Q560 268 600 300 Q590 345 540 352 Q500 340 500 300 Z" fill="#8FBAD6"/>
+            <path d="M40 60 l26 40 h-52 z M66 74 l20 32 h-40 z M600 40 l24 38 h-48 z M572 60 l18 30 h-36 z" fill="#8CC2A0" opacity=".55"/>
+            <line x1="282" y1="10" x2="282" y2="350" stroke="#BCDCEC" stroke-width="3" stroke-dasharray="10 8"/>
+            <path class="road" d="M51 209 L192 202 L358 216 L538 259"/>
+            <path class="road" d="M538 259 L499 108 L346 86 L358 216"/>
+          </svg>
+          <span class="st" style="left:calc(44% - 48px)">WA</span><span class="st" style="left:calc(44% + 14px)">ID</span>
+          <svg viewBox="0 0 640 360" preserveAspectRatio="none" aria-hidden="true" style="overflow:visible">
+            <g class="pin" data-town="Spokane Valley" style="--i:0"><circle class="core" cx="51" cy="209" r="11" fill="#1F5D4C"/><circle cx="51" cy="209" r="4" fill="#fff"/></g>
+            <g class="pin" data-town="Liberty Lake" style="--i:1"><circle class="core" cx="192" cy="202" r="11" fill="#1F5D4C"/><circle cx="192" cy="202" r="4" fill="#fff"/></g>
+            <g class="pin" data-town="Post Falls" style="--i:2"><circle class="core" cx="358" cy="216" r="11" fill="#1F5D4C"/><circle cx="358" cy="216" r="4" fill="#fff"/></g>
+            <g class="pin" data-town="Coeur d'Alene" style="--i:3"><circle class="core" cx="538" cy="259" r="11" fill="#1F5D4C"/><circle cx="538" cy="259" r="4" fill="#fff"/></g>
+            <g class="pin" data-town="Hayden" style="--i:4"><circle class="core" cx="499" cy="108" r="11" fill="#1F5D4C"/><circle cx="499" cy="108" r="4" fill="#fff"/></g>
+            <g class="pin" data-town="Rathdrum" style="--i:5"><circle class="core" cx="346" cy="86" r="11" fill="#1F5D4C"/><circle cx="346" cy="86" r="4" fill="#fff"/></g>
+          </svg>
+          <span class="lbl" data-town="Spokane Valley" style="left:3%;top:63%">Spokane Valley</span>
+          <span class="lbl" data-town="Liberty Lake" style="left:30%;top:56%;transform:translate(-50%,-100%) translateY(-14px)">Liberty Lake</span>
+          <span class="lbl" data-town="Post Falls" style="left:56%;top:64%;transform:translateX(-50%)">Post Falls</span>
+          <span class="lbl" data-town="Coeur d'Alene" style="right:4%;top:77%">Coeur d'Alene</span>
+          <span class="lbl" data-town="Hayden" style="left:78%;top:30%;transform:translate(-50%,-100%) translateY(-12px)">Hayden</span>
+          <span class="lbl" data-town="Rathdrum" style="left:54%;top:24%;transform:translate(-50%,-100%) translateY(-12px)">Rathdrum</span>
+          <span class="note">Not to scale</span>
+        </div>
+        <ul class="towns"><li><button type="button" data-town="Spokane Valley">Spokane Valley</button></li><li><button type="button" data-town="Liberty Lake">Liberty Lake</button></li><li><button type="button" data-town="Post Falls">Post Falls</button></li><li><button type="button" data-town="Coeur d'Alene">Coeur d'Alene</button></li><li><button type="button" data-town="Hayden">Hayden</button></li><li><button type="button" data-town="Rathdrum">Rathdrum</button></li></ul>
+        <p><b>Out in the community, too.</b> Kodee meets your child where they are. Sessions can happen at the playground, the library, or even an ice cream shop. It's flexible, and we choose the place together based on where you think your child will do best.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<div data-view="how-it-works" hidden>
+<section class="pine head">
+  <div class="wrap stack">
+    <h1 tabindex="-1">How it works</h1>
+    <p class="lede">Flexible scheduling, one therapist, and an optional monthly plan.</p>
+  </div>
+  <svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-green-white"/></svg>
+</section>
+
+<section class="sec" style="padding-top:40px;padding-bottom:24px">
+  <div class="wrap stack-lg">
+    <div class="stack center rv">
+      <p class="eyebrow">Why Little Mountain Voices</p>
+      <h2>Therapy that fits around your family</h2>
+      <p class="text">Many practices lock you into one day and time. We don't.</p>
+    </div>
+    <ul class="points">
+      <li class="rv"><h3>Scheduling that flexes</h3><p>Your session time can change from week to week. Pick what works this week, and something different next week.</p></li>
+      <li class="rv"><h3>An optional monthly plan</h3><p>If you'd like, one steady monthly payment can cover your child's sessions, instead of a bill after every visit.</p></li>
+      <li class="rv"><h3>We come to you</h3><p>At home, out in the community, or by teletherapy. Wherever your child does best.</p></li>
+      <li class="rv"><h3>One therapist, every visit</h3><p>Your child works with Kodee each time. No rotating staff.</p></li>
+      <li class="rv"><h3>Parents are part of it</h3><p>You see what we work on and leave each session knowing how to help.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:40px">
+  <div class="wrap narrow stack-lg">
+    <div class="stack center rv"><h2>From first call to weekly sessions</h2></div>
+    <ol class="steps">
+      <li class="rv"><h3>Free phone call</h3><p>A 15-minute call to hear your concerns and see whether we're the right fit.</p></li>
+      <li class="rv"><h3>Evaluation</h3><p>Kodee meets your child at home, then sends a written report and plan.</p></li>
+      <li class="rv"><h3>Weekly sessions</h3><p>The same therapist every week, for 45 to 60 minutes. The day and time don't have to be the same: each week you can choose from the open times, so sessions fit around your family's schedule.</p></li>
+      <li class="rv"><h3>Practice at home</h3><p>Each visit ends with a few things to try before the next one.</p></li>
+    </ol>
+  </div>
+</section>
+</div>
+
+<!-- ============ MEET KODEE ============ -->
+<div data-view="meet-kodee" hidden>
+<section class="pine head">
+  <div class="wrap stack">
+    <h1 tabindex="-1">Meet Kodee</h1>
+    <p class="lede">Kodee Welch, M.S., CCC-SLP</p>
+  </div>
+  <svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-green-white"/></svg>
+</section>
+
+<section class="sec" style="padding-top:40px">
+  <div class="wrap stack-lg">
+    <div class="about">
+      <div class="blob rv"><img src="assets/kodee.jpg" alt="Kodee Welch standing outdoors, smiling" width="360" height="450" loading="lazy"></div>
+      <div class="text stack rv">
+        <p>Kodee is a speech-language pathologist who works only with children. She has helped kids in schools, outpatient clinics and family homes, from toddlers saying their first words to grade-schoolers working on tricky sounds.</p>
+        <p>She currently works at Cleveland Clinic Children's Center for Autism, where she evaluates and treats children from 18 months to 8 years old, both with and without an autism diagnosis, and teaches parents how to support communication at home. She has extensive experience with children across the full range of communication abilities.</p>
+        <p>Kodee earned her bachelor's degree at Eastern Washington University in Cheney and is moving back to the Inland Northwest in summer 2027.</p>
+        <blockquote class="kq"><p>"Hello, my name is Kodee. I grew up in Montana, trained in Idaho, Washington and Montana, and am excited about moving back to the Northwest to offer individualized and flexible speech therapy to your child and family. I value meeting your child where they are to help them grow to their greatest potential. Whether that's on the beach, on a swing or in their home, I look forward to working with your child in their preferred environment, not in a standard treatment room."</p><footer>Kodee</footer></blockquote>
+      </div>
+    </div>
+    <dl class="facts">
+      <div class="rv"><dt>Training</dt><dd><ul>
+        <li>M.S., Speech-Language Pathology, University of Montana</li>
+        <li>B.A., Communication Sciences and Disorders, Eastern Washington University</li>
+        <li>Certificate of Clinical Competence (CCC-SLP), American Speech-Language-Hearing Association</li>
+      </ul></dd></div>
+      <div class="rv"><dt>Recent experience</dt><dd><ul>
+        <li>Cleveland Clinic Children's Center for Autism, 2026 to present</li>
+        <li>Therapy and Wellness Connection, Ohio, 2024 to 2026: clinic, school and home visits</li>
+        <li>Great Falls Public Schools, Montana, 2022 to 2024: two elementary schools</li>
+      </ul></dd></div>
+    </dl>
+  </div>
+</section>
+</div>
+
+<!-- ============ QUESTIONS ============ -->
+<div data-view="questions" hidden>
+<section class="pine head">
+  <div class="wrap stack">
+    <h1 tabindex="-1">Common questions</h1>
+  </div>
+  <svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-green-white"/></svg>
+</section>
+
+<section class="sec" style="padding-top:40px">
+  <div class="wrap narrow qa">
+    <details open><summary><h2>Do you take insurance?</h2><span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>We do not currently take insurance. We can give you an itemized receipt (called a superbill) to send to your insurance yourself. We're also looking into accepting HSA/FSA funds.</p></div></details>
+    <details><summary><h2>What does it cost?</h2><span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>We share prices on the first phone call, and you receive a written cost estimate before any services begin.</p></div></details>
+    <details><summary><h2>Does my child need a referral?</h2><span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>No referral is needed to start. If your child's doctor has concerns, we're glad to share our report with them.</p></div></details>
+    <details><summary><h2>How do I know if my child needs speech therapy?</h2><span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>Our guide lists typical skills at each age and the signs worth asking about. <a class="more" href="#what-to-look-for">What to look for</a></p></div></details>
+    <details><summary><h2>Where do sessions happen?</h2><span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>In your home or out in the community, like a playground or library. Teletherapy is available for school-age children and families farther out.</p></div></details>
+    <details><summary><h2>When can we start?</h2><span class="pm" aria-hidden="true"></span></summary><div class="ans"><p>We open in August 2027. Families on the interest list hear from us first, in the order they signed up.</p></div></details>
+  </div>
+</section>
+</div>
+
+<!-- ============ INTEREST LIST ============ -->
+<div data-view="interest-list" hidden>
+<section class="pine head">
+  <div class="wrap stack">
+    <h1 tabindex="-1">Join the interest list</h1>
+    <p class="lede">Tell us a little about your child, and we'll call you before we open in August 2027. Joining the list doesn't commit you to anything.</p>
+  </div>
+  <svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-green-white"/></svg>
+</section>
+
+<section class="sec" style="padding-top:40px">
+  <div class="wrap narrow stack-lg">
+    <div class="soonnote" role="note">
+      <h2>Online sign-up opens soon</h2>
+      <p>Until then, join the list by emailing <a href="mailto:hello@littlemountainvoices.com">hello@littlemountainvoices.com</a> or calling <a href="tel:+14062099826">(406) 209-9826</a>. Here's what we'll ask.</p>
+    </div>
+    <form id="interest-form" class="is-soon" novalidate inert aria-label="Interest list form, not open yet">
+      <div class="formhead"><div class="meter" aria-hidden="true"><i id="meter"></i></div><p class="meterlbl" id="meterlbl">0 of 6 needed answers</p></div>
+      <div class="field"><label for="parent-name">Your name</label><input type="text" id="parent-name" autocomplete="name" required aria-describedby="parent-name-err"><span class="err" id="parent-name-err"></span></div>
+      <div class="field"><label for="parent-email">Email</label><input type="email" id="parent-email" autocomplete="email" required aria-describedby="parent-email-err"><span class="err" id="parent-email-err"></span></div>
+      <div class="field"><label for="parent-phone">Phone (optional)</label><input type="tel" id="parent-phone" autocomplete="tel" aria-describedby="parent-phone-err"><span class="err" id="parent-phone-err"></span></div>
+      <div class="field"><label for="town">Town</label><input type="text" id="town" autocomplete="address-level2" required aria-describedby="town-err" list="town-list"><datalist id="town-list"><option value="Spokane Valley"><option value="Liberty Lake"><option value="Post Falls"><option value="Coeur d'Alene"><option value="Hayden"><option value="Rathdrum"></datalist><span class="err" id="town-err"></span></div>
+      <fieldset class="field full" id="child-age" data-required aria-describedby="child-age-err"><legend>Child's age</legend><div class="chips">
+        <label><input type="radio" name="child-age" id="age-a" value="Under 18 months"><span>Under 18 months</span></label>
+        <label><input type="radio" name="child-age" id="age-b" value="18 months to 2 years"><span>18 months to 2 years</span></label>
+        <label><input type="radio" name="child-age" id="age-c" value="3 to 5 years"><span>3 to 5 years</span></label>
+        <label><input type="radio" name="child-age" id="age-d" value="6 to 10 years"><span>6 to 10 years</span></label>
+        <label><input type="radio" name="child-age" id="age-e" value="Over 10 years"><span>Over 10 years</span></label>
+      </div><span class="err" id="child-age-err"></span></fieldset>
+      <fieldset class="field full" id="concern" data-required aria-describedby="concern-err"><legend>Main concern</legend><div class="chips">
+        <label><input type="radio" name="concern" id="concern-a" value="Hard to understand"><span>Hard to understand</span></label>
+        <label><input type="radio" name="concern" id="concern-b" value="Not talking yet, or few words"><span>Not talking yet, or few words</span></label>
+        <label><input type="radio" name="concern" id="concern-c" value="Not sure, would like an evaluation"><span>Not sure, would like an evaluation</span></label>
+        <label><input type="radio" name="concern" id="concern-d" value="Something else"><span>Something else</span></label>
+      </div><span class="err" id="concern-err"></span></fieldset>
+      <div class="field full"><label for="notes">Anything else you'd like us to know? (optional)</label><textarea id="notes"></textarea></div>
+      <div class="field full"><label for="heard">How did you hear about us? (optional)</label><input type="text" id="heard"></div>
+      <div class="field full"><label class="check" for="consent"><input type="checkbox" id="consent" required aria-describedby="consent-err"><span>Yes, Little Mountain Voices may contact me about services. Please don't include medical details beyond what's asked here.</span></label><span class="err" id="consent-err"></span></div>
+      <div class="field full"><button class="btn btn-pine" type="submit">Join the list <span class="arrow" aria-hidden="true">&rarr;</span></button></div>
+      <p class="formnote" id="form-note" role="status" hidden></p>
+    </form>
+    <div class="done" id="done" hidden tabindex="-1">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><g class="cheer"><path d="M3 38 L17 9 Q20 4 23 9 L37 38 Z" fill="#8CC2A0"/><path d="M20 5.5 Q22 6 23 9 L37 38 H27 L21.5 20 Z" fill="#74B28D"/><path d="M17 9 Q20 4 23 9 L26.5 16 L23 14 L20 18 L17 14 L13.5 16 Z" fill="#FFFFFF"/><path d="M14 26 Q16 24 18 26 M22 26 Q24 24 26 26" fill="none" stroke="#16302B" stroke-width="1.8" stroke-linecap="round"/><path d="M15.5 30 Q20 35.5 24.5 30 Z" fill="#16302B"/></g></svg>
+      <h2>Thanks, <span id="done-name">friend</span>!</h2>
+      <p class="text">This is a draft page, so nothing was sent or saved yet. When the form is connected, this is where families will see that they're on the list.</p>
+      <button class="btn btn-pine" type="button" id="done-back">Edit answers</button>
+    </div>
+    <div class="stack">
+      <h2>Prefer to reach out directly?</h2>
+      <p class="contact-line">Email: <a href="mailto:hello@littlemountainvoices.com">hello@littlemountainvoices.com</a></p>
+      <p class="contact-line">Phone: <a href="tel:+14062099826">(406) 209-9826</a></p>
+    </div>
+  </div>
+</section>
+</div>
+
+<svg class="ridge" aria-hidden="true" viewBox="0 0 1440 170" preserveAspectRatio="none"><use href="#r-white-green"/></svg>
+<section class="pine cta" id="cta-band">
+  <div class="wrap">
+    <h2 class="rv">Opening August 2027</h2>
+    <p>Families on the interest list hear from us first.</p>
+    <a class="btn btn-light" href="#interest-list">Join the interest list <span class="arrow" aria-hidden="true">&rarr;</span></a>
+  </div>
+</section>
 </main>
-<svg class="ridge" aria-hidden="true" viewBox="0 0 1440 150" preserveAspectRatio="none"><path d="M0 90 L150 40 L280 84 L450 18 L600 86 L780 32 L940 88 L1110 24 L1270 82 L1440 44 V150 H0 Z" fill="#2A7A62"/><path d="M0 120 L200 66 L360 112 L560 54 L760 118 L960 68 L1140 114 L1300 76 L1440 104 V150 H0 Z" fill="#174A3C"/></svg>
-<footer>Our full website is on its way.</footer>
+
+<footer>
+  <div class="wrap">
+    <div class="stack">
+      <p style="font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--on-pine)">Little Mountain Voices</p>
+      <p>Pediatric speech therapy that comes to you.</p>
+    </div>
+    <div class="stack">
+      <p><b>Contact</b></p>
+      <p>Email: <a href="mailto:hello@littlemountainvoices.com" style="color:inherit">hello@littlemountainvoices.com</a><br>Phone: <a href="tel:+14062099826" style="color:inherit">(406) 209-9826</a></p>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
